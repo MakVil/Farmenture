@@ -52,7 +52,7 @@ public class MainCharInventory : MonoBehaviour
                         removeItem = true;
 
                         // Update hotbar
-                        if(slot.ID >= 0 || slot.ID < 8)
+                        if (slot.ID >= 0 || slot.ID < 8)
                         {
                             HotbarController.Instance.AddItemCount(item, slot.ID);
                         }
@@ -83,6 +83,10 @@ public class MainCharInventory : MonoBehaviour
             if (removeItem)
             {
                 item.gameObject.SetActive(false);
+                if(item is Plant)
+                {
+                    FarmingController.Instance.PickUpPlant((Plant) item);
+                }
             }
             else
             {
@@ -91,10 +95,21 @@ public class MainCharInventory : MonoBehaviour
         }
     }
 
-    // Used for adding items when loading saved data
-    public static void AddItemToInventory(PickUpItem item, int count)
+    public void DecreaseItemCount(PickUpItem item, int count)
     {
-        foreach (InventorySlot slot in Instance.inventorySlotList)
+        foreach (InventorySlot slot in inventorySlotList)
+        {
+            if(slot.Item != null && slot.Item.itemType.Equals(item.itemType))
+            {
+                slot.UpdateCount(-count);
+            }
+        }
+    }
+
+    // Used for adding items when loading saved data
+    public void AddItemToInventory(PickUpItem item, int count)
+    {
+        foreach (InventorySlot slot in inventorySlotList)
         {
             if (slot.GetItemSprite() == null)
             {
@@ -107,6 +122,14 @@ public class MainCharInventory : MonoBehaviour
                 }
                 break;
             }
+        }
+    }
+
+    public void EmptyInventory()
+    {
+        foreach(InventorySlot slot in inventorySlotList)
+        {
+            slot.EmptySlot();
         }
     }
 }

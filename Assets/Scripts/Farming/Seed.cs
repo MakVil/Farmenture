@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class Seed : PickUpItem
 {
-    
+    public int daysToGrow;
+
+    public GameObject growToPrefab;
 }

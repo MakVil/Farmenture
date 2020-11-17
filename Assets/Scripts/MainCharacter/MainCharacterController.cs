@@ -8,7 +8,7 @@ public class MainCharacterController : MonoBehaviour
     private Rigidbody2D rb;
 
     public Vector3 startPosition;
-    public float movementSpeed = 5f;
+    public float movementSpeed = 4f;
     private Vector2 movement;
     private bool faceRight;
     public bool FaceRight { get => faceRight; }
@@ -163,13 +163,11 @@ public class MainCharacterController : MonoBehaviour
         }
         else if (HotbarController.Instance.IsSeedSelected())
         {
-            Debug.Log("This is seed!");
-
             RaycastHit2D hitDirt;
             if (idleHor)
-                hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 1f, LayerMask.GetMask("DirtPlot"));
+                hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 0.5f, LayerMask.GetMask("DirtPlot"));
             else
-                hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 1f, LayerMask.GetMask("DirtPlot"));
+                hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 0.5f, LayerMask.GetMask("DirtPlot"));
 
             if (hitDirt.collider != null && hitDirt.collider.GetComponent<DirtPlot>() != null)
                 hitDirt.collider.GetComponent<DirtPlot>().PlantSeed(HotbarController.Instance.GetSelectedSeed());
@@ -203,7 +201,7 @@ public class MainCharacterController : MonoBehaviour
         }
     }
 
-    public void refillEnergy()
+    public void RefillEnergy()
     {
         Energy = maxEnergy;
         UpdateEnergyBar();

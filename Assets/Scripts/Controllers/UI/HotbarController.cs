@@ -67,7 +67,7 @@ public class HotbarController : MonoBehaviour
     {
         this.AddItem(item, toID, -1);
     }
-
+    
     public void AddItem(PickUpItem item, int toID, int count)
     {
         HotbarSlot slot = GetSlot(toID);
@@ -83,6 +83,17 @@ public class HotbarController : MonoBehaviour
         else
             Debug.Log("hotbar slot not found!");
 
+    }
+
+    public void DecreaseItemCount(PickUpItem item, int count)
+    {
+        HotbarSlot slot = GetSlot(item.itemType);
+        if (slot != null)
+        {
+            slot.UpdateCount(-count);
+        }
+        else
+            Debug.Log("Hotbar slot not found!");
     }
 
     public void AddItemCount(PickUpItem item, int toID)
@@ -108,6 +119,22 @@ public class HotbarController : MonoBehaviour
         foreach (HotbarSlot slot in HotbarSlotsList)
         {
             if (slot.ID == ID)
+            {
+                outSlot = slot;
+                break;
+            }
+        }
+
+        return outSlot;
+    }
+
+    private HotbarSlot GetSlot(PickUpItem.ItemTypes itemType)
+    {
+        HotbarSlot outSlot = null;
+
+        foreach (HotbarSlot slot in HotbarSlotsList)
+        {
+            if (slot.Item != null && slot.Item.itemType.Equals(itemType))
             {
                 outSlot = slot;
                 break;
@@ -167,5 +194,13 @@ public class HotbarController : MonoBehaviour
         }
 
         return isSelected;
+    }
+
+    public void EmptyHotbar()
+    {
+        foreach (HotbarSlot slot in hotbarSlotList)
+        {
+            slot.EmptySlot();
+        }
     }
 }

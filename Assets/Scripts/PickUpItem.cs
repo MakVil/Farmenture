@@ -12,9 +12,11 @@ public class PickUpItem : MonoBehaviour
 
     public enum ItemTypes
     {
+        Empty,
         GoldNugget,
         Axe,
         PumpkinSeed,
+        Pumpkin,
         Random
     }
 

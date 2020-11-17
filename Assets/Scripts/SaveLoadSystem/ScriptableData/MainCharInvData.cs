@@ -22,11 +22,14 @@ public class MainCharInvData : ScriptableObject
 
     public void Load(PickUpTypeList list)
     {
+        MainCharInventory.Instance.EmptyInventory();
+        HotbarController.Instance.EmptyHotbar();
+
         JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SAVE_KEY), this);
         for (int i = 0; i < counts.Count; i++)
         {
             if(list.GetPickUpItem(items[i]) != null)
-                MainCharInventory.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
+                MainCharInventory.Instance.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
         }
     }
 

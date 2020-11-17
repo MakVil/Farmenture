@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPosition: {x: 0, y: 0, z: 0}
-  movementSpeed: 5
+  movementSpeed: 4
   isSwinging: 0
   maxEnergy: 100
   swordPrefab: {fileID: 6865973075771077771, guid: 046b602708458ca42b9c80f97d1739b5,

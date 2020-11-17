@@ -9,7 +9,9 @@ public class SaveLoadSystem : MonoBehaviour
 
     public MainCharInvData mcInventoryData;
 
-    public GameObject pickUpTypeList;
+    public DirtPlotData dirtPlotData;
+    
+    public PickUpTypeList pickUpTypeList;
 
     public static SaveLoadSystem Instance { get; private set; }
 
@@ -35,13 +37,15 @@ public class SaveLoadSystem : MonoBehaviour
         Debug.Log("Save data");
         mainCharacterStats.Save(mainCharacter.GetComponent<MainCharacterController>());
         mcInventoryData.Save();
+        dirtPlotData.Save();
     }
 
     public void LoadProgress()
     {
         Debug.Log("Load data");
         mainCharacterStats.Load(mainCharacter.GetComponent<MainCharacterController>());
-        mcInventoryData.Load(pickUpTypeList.GetComponent<PickUpTypeList>());
+        mcInventoryData.Load(pickUpTypeList);
+        dirtPlotData.Load(pickUpTypeList);
     }
 
 }

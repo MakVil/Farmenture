@@ -19,7 +19,7 @@ public class TimeSystem : MonoBehaviour
     void Start()
     {
         currentHours = DAY_START_HOURS;
-        currentMins = 0;
+        currentMins = 50;
 
         UpdateTimeText();
     }
@@ -48,8 +48,10 @@ public class TimeSystem : MonoBehaviour
         if (mc != null)
         {
             mc.moveToStartPosition();
-            mc.refillEnergy();
+            mc.RefillEnergy();
         }
+
+        FarmingController.Instance.AgePlants();
 
         SaveLoadSystem.Instance.SaveProgress();
     }

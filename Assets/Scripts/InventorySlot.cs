@@ -71,8 +71,17 @@ public class InventorySlot : MonoBehaviour
         }
         else
         {
-            //TODO: remove from inventory
+            EmptySlot();
         }
+    }
+
+    public void EmptySlot()
+    {
+        item = null;
+        count = 0;
+        itemImage.sprite = null;
+        HideItemImage();
+        HideCountLabel();
     }
 
     public void AddItem(PickUpItem newItem)

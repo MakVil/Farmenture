@@ -26,4 +26,20 @@ public class PickUpTypeList : MonoBehaviour
 
          return outItem;
     }
+
+    public PickUpItem GetPickUpItem(PickUpItem.ItemTypes type)
+    {
+        PickUpItem outItem = null;
+
+        foreach (PickUpItem item in items)
+        {
+            if (item.itemType.Equals(type))
+            {
+                outItem = item;
+                break;
+            }
+        }
+
+        return outItem;
+    }
 }

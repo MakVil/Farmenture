@@ -10,11 +10,7 @@ public class NPCController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject dialog = getDialog();
-        if (dialog != null)
-        {
-            dialog.SetActive(false);
-        }
+        UIController.Instance.CloseDialog();
         timerDisplay = -1;
     }
 
@@ -26,11 +22,7 @@ public class NPCController : MonoBehaviour
             timerDisplay -= Time.deltaTime;
             if (timerDisplay < 0)
             {
-                GameObject dialog = getDialog();
-                if (dialog != null)
-                {
-                    dialog.SetActive(false);
-                }
+                UIController.Instance.CloseDialog();
             }
         }
 
@@ -38,25 +30,7 @@ public class NPCController : MonoBehaviour
 
     public void StartDialog()
     {
-        GameObject dialog = getDialog();
-        if (dialog != null)
-        {
-            dialog.SetActive(true);
-            timerDisplay = displayTime;
-        }
-
-    }
-
-    private GameObject getDialog()
-    {
-        GameObject dialog = null;
-
-        DialogController dialogCont = DialogController.instance;
-        if (dialogCont != null && dialogCont.gameObject != null)
-        {
-            dialog = dialogCont.gameObject;
-        }
-
-        return dialog;
+        UIController.Instance.OpenDialog();
+        timerDisplay = displayTime;
     }
 }

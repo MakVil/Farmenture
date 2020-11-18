@@ -10,6 +10,11 @@ public class PickUpItem : MonoBehaviour
     public int Count { get => count; }
     public ItemTypes itemType;
 
+    public int buyPrice;
+    public int sellPrice;
+    public bool canBeSelled = false;
+    public bool canBeBought = false;
+
     public enum ItemTypes
     {
         Empty,

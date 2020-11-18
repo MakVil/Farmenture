@@ -53,7 +53,7 @@ public class SwordController : MonoBehaviour
         Destroy(gameObject);
         if(mainCharacter != null && mainCharacter.GetComponent<MainCharacterController>() != null)
         {
-            mainCharacter.GetComponent<MainCharacterController>().isSwinging = false;
+            mainCharacter.GetComponent<MainCharacterController>().canMove = false;
         }
     }
 }

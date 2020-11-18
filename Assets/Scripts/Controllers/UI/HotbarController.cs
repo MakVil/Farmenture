@@ -67,7 +67,7 @@ public class HotbarController : MonoBehaviour
     {
         this.AddItem(item, toID, -1);
     }
-    
+
     public void AddItem(PickUpItem item, int toID, int count)
     {
         HotbarSlot slot = GetSlot(toID);
@@ -188,7 +188,7 @@ public class HotbarController : MonoBehaviour
         bool isSelected = false;
 
         HotbarSlot slot = GetSelected();
-        if(slot != null && slot.Item != null)
+        if (slot != null && slot.Item != null)
         {
             isSelected = (slot.Item is Seed);
         }
@@ -202,5 +202,15 @@ public class HotbarController : MonoBehaviour
         {
             slot.EmptySlot();
         }
+    }
+
+    public void HideHotbar()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void ShowHotbar()
+    {
+        gameObject.SetActive(true);
     }
 }

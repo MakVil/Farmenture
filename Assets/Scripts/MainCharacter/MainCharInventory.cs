@@ -44,7 +44,7 @@ public class MainCharInventory : MonoBehaviour
             // First check if the item is already in the inventory and find empty slot just in case
             foreach (InventorySlot slot in inventorySlotList)
             {
-                if (slot.GetItemSprite() != null && slot.GetItemSprite().Equals(sprite))
+                if (slot.GetItemSprite() != null && slot.GetItemSprite().Equals(sprite) && slot.Count < 99)
                 {
                     if (!item.isUnique)
                     {
@@ -102,6 +102,12 @@ public class MainCharInventory : MonoBehaviour
             if(slot.Item != null && slot.Item.itemType.Equals(item.itemType))
             {
                 slot.UpdateCount(-count);
+
+                // Update hotbar
+                if (slot.ID >= 0 || slot.ID < 8)
+                {
+                    HotbarController.Instance.DecreaseItemCount(item, count);
+                }
             }
         }
     }
@@ -131,5 +137,21 @@ public class MainCharInventory : MonoBehaviour
         {
             slot.EmptySlot();
         }
+    }
+
+    public List<PickUpItem> GetItems()
+    {
+        List<PickUpItem> outItems = new List<PickUpItem>();
+
+        foreach(InventorySlot slot in inventorySlotList)
+        {
+            if(slot.Item != null)
+            {
+                slot.Item.count = slot.Count;
+                outItems.Add(slot.Item);
+            }
+        }
+
+        return outItems;
     }
 }

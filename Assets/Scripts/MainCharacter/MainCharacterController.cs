@@ -15,12 +15,15 @@ public class MainCharacterController : MonoBehaviour
     private bool faceUp;
     private bool idleHor;
 
-    public bool isSwinging;
+    public bool canMove;
 
     public int maxEnergy = 100;
     private int currentEnergy;
 
     public int Energy { get => currentEnergy; set{ currentEnergy = value; UpdateEnergyBar(); }}
+
+    private int money = 10;
+    public int Money { get => money; set { money = value; } }
 
     private float timeInvincible = 2.0f;
     private float timeLeftInvincible;
@@ -32,6 +35,8 @@ public class MainCharacterController : MonoBehaviour
 
     private Animator animator;
 
+    public static MainCharacterController Instance { get; private set; }
+    
     // Start is called before the first frame update
     private void Start()
     {
@@ -44,7 +49,7 @@ public class MainCharacterController : MonoBehaviour
         isInvincible = false;
 
         faceRight = false;
-        isSwinging = false;
+        canMove = true;
 
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
@@ -52,6 +57,7 @@ public class MainCharacterController : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         startPosition = gameObject.transform.position;
     }
 
@@ -133,7 +139,7 @@ public class MainCharacterController : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 position = rb.position;
-        if (!isSwinging)
+        if (canMove)
         {
             position.x = position.x + GetMovementSpeed() * movement.x;
             position.y = position.y + GetMovementSpeed() * movement.y;
@@ -144,37 +150,56 @@ public class MainCharacterController : MonoBehaviour
 
     private void OpenCloseInventory()
     {
-        MainCharInventory.Instance.gameObject.SetActive(!MainCharInventory.Instance.gameObject.activeSelf);
-        HotbarController.Instance.gameObject.SetActive(!HotbarController.Instance.gameObject.activeSelf);
+        if(MainCharInventory.Instance.gameObject.activeSelf)
+        {
+            UIController.Instance.CloseInventory();
+        }
+        else if(WebStoreController.Instance.gameObject.activeSelf)
+        {
+            UIController.Instance.CloseWebStore();
+        }
+        else
+        {
+            UIController.Instance.OpenInventory();
+        }
     }
 
     private void Interact()
     {
-
-        RaycastHit2D hit;
-        if(idleHor)
-            hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 1f, LayerMask.GetMask("NPC"));
-        else
-            hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 1f, LayerMask.GetMask("NPC"));
-
-        if (hit.collider != null && hit.collider.GetComponent<NPCController>() != null)
+        if (UIController.Instance.IsAllClosed())
         {
-            hit.collider.GetComponent<NPCController>().StartDialog();
-        }
-        else if (HotbarController.Instance.IsSeedSelected())
-        {
-            RaycastHit2D hitDirt;
+            RaycastHit2D hit;
             if (idleHor)
-                hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 0.5f, LayerMask.GetMask("DirtPlot"));
+                hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 1f, LayerMask.GetMask("NPC"));
             else
-                hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 0.5f, LayerMask.GetMask("DirtPlot"));
+                hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 1f, LayerMask.GetMask("NPC"));
 
-            if (hitDirt.collider != null && hitDirt.collider.GetComponent<DirtPlot>() != null)
-                hitDirt.collider.GetComponent<DirtPlot>().PlantSeed(HotbarController.Instance.GetSelectedSeed());
-        }
-        else
-        {
-            HotbarController.Instance.Action();
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Computer"))
+                {
+                    UIController.Instance.OpenWebStore();
+                }
+                else if (hit.collider.GetComponent<NPCController>() != null)
+                {
+                    hit.collider.GetComponent<NPCController>().StartDialog();
+                }
+            }
+            else if (HotbarController.Instance.IsSeedSelected())
+            {
+                RaycastHit2D hitDirt;
+                if (idleHor)
+                    hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 0.5f, LayerMask.GetMask("DirtPlot"));
+                else
+                    hitDirt = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 0.5f, LayerMask.GetMask("DirtPlot"));
+
+                if (hitDirt.collider != null && hitDirt.collider.GetComponent<DirtPlot>() != null)
+                    hitDirt.collider.GetComponent<DirtPlot>().PlantSeed(HotbarController.Instance.GetSelectedSeed());
+            }
+            else
+            {
+                HotbarController.Instance.Action();
+            }
         }
     }
 
@@ -217,19 +242,19 @@ public class MainCharacterController : MonoBehaviour
 
     private void SwingSword()
     {
-        if (!isSwinging)
+        if (canMove)
         {
             GameObject swordObject = Instantiate(swordPrefab, rb.position + getSwordPositionOffset(), Quaternion.identity);
             SwordController sword = swordObject.GetComponent<SwordController>();
             if (sword != null)
             {
                 sword.Swing(faceRight ? 1.0f : 0.0f, gameObject);
-                isSwinging = true;
+                canMove = false;
             }
         }
     }
 
-    public void moveToStartPosition()
+    public void MoveToStartPosition()
     {
         gameObject.transform.position = startPosition;
     }
@@ -253,5 +278,17 @@ public class MainCharacterController : MonoBehaviour
         if(!idleHor)
             offset += (faceRight ? Vector2.right : Vector2.left) * 0.3f;
         return offset;
+    }
+
+    public void AddMoney(int amount)
+    {
+        money += amount;
+        UIController.Instance.UpdateMoney();
+    }
+
+    public void ReduceMoney(int amount)
+    {
+        money = Mathf.Clamp(money - amount, 0, 99999999);
+        UIController.Instance.UpdateMoney();
     }
 }

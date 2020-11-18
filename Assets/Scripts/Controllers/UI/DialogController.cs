@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class DialogController : MonoBehaviour
 {
-    public static DialogController instance { get; private set; }
+    public static DialogController Instance { get; private set; }
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
+    }
+
+    public void CloseDialog()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void OpenDialog()
+    {
+        gameObject.SetActive(true);
     }
 }

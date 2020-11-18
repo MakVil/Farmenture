@@ -23,7 +23,6 @@ public class DirtPlot : MonoBehaviour
                 ren.sprite = seed.itemSprite;
 
             MainCharInventory.Instance.DecreaseItemCount(seed, 1);
-            HotbarController.Instance.DecreaseItemCount(seed, 1);
         }
     }
 

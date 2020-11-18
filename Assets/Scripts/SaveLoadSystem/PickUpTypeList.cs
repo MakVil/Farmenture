@@ -6,25 +6,18 @@ public class PickUpTypeList : MonoBehaviour
 {
     public PickUpItem[] items;
 
-    private void Start()
+    public static PickUpTypeList Instance { get; private set; }
+
+    private void Awake()
     {
+        Instance = this;
     }
 
     public PickUpItem GetPickUpItem(string itemTypeStr)
     {
-         PickUpItem outItem = null;
-         PickUpItem.ItemTypes type = PickUpItem.GetItemType(itemTypeStr);
+        PickUpItem.ItemTypes type = PickUpItem.GetItemType(itemTypeStr);
 
-         foreach (PickUpItem item in items)
-         {
-             if (item.itemType.Equals(type))
-             {
-                 outItem = item;
-                 break;
-             }
-         }
-
-         return outItem;
+        return GetPickUpItem(type);
     }
 
     public PickUpItem GetPickUpItem(PickUpItem.ItemTypes type)

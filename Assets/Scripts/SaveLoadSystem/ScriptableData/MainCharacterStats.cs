@@ -8,12 +8,14 @@ public class MainCharacterStats : ScriptableObject
     private const string SAVE_KEY = "MainCharacterStatSave";
 
     private int currentEnergy;
+    private int currentMoney;
 
     public void Save(MainCharacterController mc)
     {
         if (mc != null)
         {
             currentEnergy = mc.Energy;
+            currentMoney = mc.Money;
 
             string jsonData = JsonUtility.ToJson(this);
             PlayerPrefs.SetString(SAVE_KEY, jsonData);
@@ -28,6 +30,7 @@ public class MainCharacterStats : ScriptableObject
             JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SAVE_KEY), this);
 
             mc.Energy = currentEnergy;
+            mc.Money = currentMoney;
         }
     }
 }

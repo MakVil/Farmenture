@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TimeSystem : MonoBehaviour
 {
-    public GameObject clockText;
+    public GameObject clockTextBox;
 
     private const int DAY_START_HOURS = 8;
     private const int DAY_END_HOURS = 9;
@@ -14,12 +14,19 @@ public class TimeSystem : MonoBehaviour
     private int currentHours;
     private float currentMins;
 
-    public GameObject mainChar;
-    
+    public int day = 1;
+
+    public static TimeSystem Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         currentHours = DAY_START_HOURS;
-        currentMins = 0f;
+        currentMins = 50f;
 
         UpdateTimeText();
     }
@@ -43,8 +50,9 @@ public class TimeSystem : MonoBehaviour
     {
         currentHours = DAY_START_HOURS;
         currentMins = 0;
+        day++;
 
-        MainCharacterController mc = mainChar.GetComponent<MainCharacterController>();
+        MainCharacterController mc = MainCharacterController.Instance;
         if (mc != null)
         {
             mc.MoveToStartPosition();
@@ -60,15 +68,28 @@ public class TimeSystem : MonoBehaviour
 
     private void UpdateTimeText()
     {
-        TextMeshProUGUI text = clockText.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI text = clockTextBox.GetComponentInChildren<TextMeshProUGUI>();
         if (text != null)
         {
             StringBuilder timeText = new StringBuilder();
+            timeText.Append("Day ");
+            timeText.Append(day);
+            timeText.Append("  ");
             timeText.Append(currentHours < 10 ? "0" + currentHours.ToString() : currentHours.ToString());
             timeText.Append(":");
             timeText.Append(currentMins < 10 ? "0" + Mathf.FloorToInt(currentMins).ToString() : Mathf.FloorToInt(currentMins).ToString());
 
             text.SetText(timeText.ToString());
         }
+    }
+
+    public void HideTimeBox()
+    {
+        clockTextBox.SetActive(false);
+    }
+
+    public void ShowTimeBox()
+    {
+        clockTextBox.SetActive(true);
     }
 }

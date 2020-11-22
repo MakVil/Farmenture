@@ -44,7 +44,7 @@ public class DirtPlot : MonoBehaviour
         if (daysToGrow == 0)
         {
             // Check if the plant is seed. If seed, grow it to plant
-            PickUpItem plantItem = SaveLoadSystem.Instance.pickUpTypeList.GetPickUpItem(plant);
+            PickUpItem plantItem = PickUpTypeList.Instance.GetPickUpItem(plant);
             if (plantItem is Seed)
             {
                 GameObject newPlantOb = SpawnPlant(((Seed) plantItem).growToPrefab);
@@ -67,6 +67,8 @@ public class DirtPlot : MonoBehaviour
 
     public GameObject SpawnPlant(GameObject plantPrefab)
     {
-        return Instantiate(plantPrefab, transform.position, Quaternion.identity);
+        GameObject plant = Instantiate(plantPrefab, transform.position, Quaternion.identity);
+        plant.SetActive(true);
+        return plant;
     }
 }

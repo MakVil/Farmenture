@@ -20,11 +20,7 @@ public class SwordController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MainCharacterController mc = mainCharacter.GetComponent<MainCharacterController>();
-        if (mc != null && mainCharacter.GetComponent<Rigidbody2D>() != null)
-        {
-            rb.MovePosition(mainCharacter.GetComponent<Rigidbody2D>().position + mc.getSwordPositionOffset());
-        }
+        rb.MovePosition(MainCharacterController.Instance.GetComponent<Rigidbody2D>().position + MainCharacterController.Instance.getSwordPositionOffset());
     }
 
     private void OnTriggerEnter2D (Collider2D collision)
@@ -51,9 +47,6 @@ public class SwordController : MonoBehaviour
     public void AfterSwing()
     {
         Destroy(gameObject);
-        if(mainCharacter != null && mainCharacter.GetComponent<MainCharacterController>() != null)
-        {
-            mainCharacter.GetComponent<MainCharacterController>().canMove = false;
-        }
+        MainCharacterController.Instance.canMove = true;
     }
 }

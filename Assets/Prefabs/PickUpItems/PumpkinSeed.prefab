@@ -104,7 +104,7 @@ MonoBehaviour:
   sellPrice: 1
   canBeSelled: 1
   canBeBought: 1
-  daysToGrow: 2
+  daysToGrow: 1
   growToPrefab: {fileID: 834796883810660330, guid: 58300c340238134488aca3349c29c44a,
     type: 3}
 --- !u!61 &6110233609532161048

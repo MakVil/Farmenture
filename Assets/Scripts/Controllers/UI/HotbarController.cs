@@ -5,18 +5,14 @@ using UnityEngine;
 
 public class HotbarController : MonoBehaviour
 {
-    private List<HotbarSlot> hotbarSlotList;
+    private List<HotbarSlot> hotbarSlotList = new List<HotbarSlot>();
     public List<HotbarSlot> HotbarSlotsList { get => hotbarSlotList; }
     public static HotbarController Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
-    }
 
-    private void Start()
-    {
-        Instance.hotbarSlotList = new List<HotbarSlot>();
         HotbarSlot[] slots = GetComponentsInChildren<HotbarSlot>();
         for (int i = 0; i < 8; i++)
         {

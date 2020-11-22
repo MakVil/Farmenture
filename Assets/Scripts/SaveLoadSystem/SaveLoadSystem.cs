@@ -4,20 +4,35 @@ using UnityEngine;
 
 public class SaveLoadSystem : MonoBehaviour
 {
-    public GameObject mainCharacter;
     public MainCharacterStats mainCharacterStats;
 
     public MainCharInvData mcInventoryData;
 
     public DirtPlotData dirtPlotData;
-    
-    public PickUpTypeList pickUpTypeList;
+
+    public static int usedSaveSlot;
+    public static string saveName;
+    public static bool loadSave;
 
     public static SaveLoadSystem Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        if (saveName != null && (usedSaveSlot == 1 || usedSaveSlot == 2 || usedSaveSlot ==3))
+        {
+            if (loadSave)
+                LoadProgress();
+            else
+            {
+                // Case of new game
+                SaveProgress();
+            }
+        }
     }
 
     void Update()
@@ -35,17 +50,31 @@ public class SaveLoadSystem : MonoBehaviour
     public void SaveProgress()
     {
         Debug.Log("Save data");
-        mainCharacterStats.Save(mainCharacter.GetComponent<MainCharacterController>());
-        mcInventoryData.Save();
-        dirtPlotData.Save();
+        mainCharacterStats.Save(usedSaveSlot, saveName);
+        mcInventoryData.Save(usedSaveSlot);
+        dirtPlotData.Save(usedSaveSlot);
     }
 
     public void LoadProgress()
     {
         Debug.Log("Load data");
-        mainCharacterStats.Load(mainCharacter.GetComponent<MainCharacterController>());
-        mcInventoryData.Load(pickUpTypeList);
-        dirtPlotData.Load(pickUpTypeList);
+        mainCharacterStats.Load(usedSaveSlot);
+        mcInventoryData.Load(usedSaveSlot);
+        dirtPlotData.Load(usedSaveSlot);
     }
 
+    public void LoadSaveSlotData(SaveSlot slot)
+    {
+        mainCharacterStats.LoadSaveSlotData(slot);
+    }
+
+    public void DeleteSaveSlot(SaveSlot slot)
+    {
+        if (slot != null)
+        {
+            mainCharacterStats.DeleteSave(slot.saveSlot);
+            mcInventoryData.DeleteSave(slot.saveSlot);
+            dirtPlotData.DeleteSave(slot.saveSlot);
+        }
+    }
 }

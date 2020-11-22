@@ -8,28 +8,44 @@ public class MainCharInvData : ScriptableObject
 {
     private const string SAVE_KEY = "MainCharInvDataSave";
 
-    private List<string> items = new List<string>();
-    private List<int> counts = new List<int>();
+    public List<string> items = new List<string>();
+    public List<int> counts = new List<int>();
 
-    public void Save()
+    public void Save(int saveSlot)
     {
-        GetItemsAndCounts();
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
+        {
+            GetItemsAndCounts();
 
-        string jsonData = JsonUtility.ToJson(this,true);
-        PlayerPrefs.SetString(SAVE_KEY, jsonData);
-        PlayerPrefs.Save();
+            string jsonData = JsonUtility.ToJson(this);
+            PlayerPrefs.SetString(SAVE_KEY + saveSlot, jsonData);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            Debug.Log("Save slot number invalid!");
+        }
     }
 
-    public void Load(PickUpTypeList list)
+    public void Load(int saveSlot)
     {
-        MainCharInventory.Instance.EmptyInventory();
-        HotbarController.Instance.EmptyHotbar();
-
-        JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SAVE_KEY), this);
-        for (int i = 0; i < counts.Count; i++)
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
         {
-            if(list.GetPickUpItem(items[i]) != null)
-                MainCharInventory.Instance.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
+            MainCharInventory.Instance.EmptyInventory();
+            HotbarController.Instance.EmptyHotbar();
+
+            PickUpTypeList list = PickUpTypeList.Instance;
+
+            JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SAVE_KEY + saveSlot), this);
+            for (int i = 0; i < counts.Count; i++)
+            {
+                if(list.GetPickUpItem(items[i]) != null)
+                    MainCharInventory.Instance.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
+                }
+            }
+        else
+        {
+            Debug.Log("Save slot number invalid!");
         }
     }
 
@@ -47,5 +63,11 @@ public class MainCharInvData : ScriptableObject
                 counts.Add(slot.Count);
             }
         }
+    }
+
+    public void DeleteSave(int saveSlot)
+    {
+        if (PlayerPrefs.HasKey(SAVE_KEY + saveSlot.ToString()))
+            PlayerPrefs.DeleteKey(SAVE_KEY + saveSlot.ToString());
     }
 }

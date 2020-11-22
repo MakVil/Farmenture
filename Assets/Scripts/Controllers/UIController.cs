@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     public HotbarController hotbarCont;
     public DialogController dialogCont;
     public WebStoreController storeCont;
+    public TimeSystem timeSystem;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class UIController : MonoBehaviour
         dialogCont = DialogController.Instance;
         storeCont = WebStoreController.Instance;
         mainCharCont = MainCharacterController.Instance;
+        timeSystem = TimeSystem.Instance;
     }
 
     public void CloseInventory()
@@ -39,6 +41,7 @@ public class UIController : MonoBehaviour
         hotbarCont.gameObject.SetActive(true);
 
         coinTextBox.gameObject.SetActive(false);
+        timeSystem.ShowTimeBox();
         EnergyBox.gameObject.SetActive(true);
 
         mainCharCont.canMove = true;
@@ -53,6 +56,7 @@ public class UIController : MonoBehaviour
 
             coinTextBox.gameObject.SetActive(true);
             UpdateMoney();
+            timeSystem.HideTimeBox();
 
             EnergyBox.gameObject.SetActive(false);
 
@@ -66,6 +70,8 @@ public class UIController : MonoBehaviour
         hotbarCont.ShowHotbar();
 
         coinTextBox.gameObject.SetActive(false);
+        EnergyBox.gameObject.SetActive(true);
+        timeSystem.ShowTimeBox();
 
         EnergyBox.gameObject.SetActive(true);
 
@@ -79,6 +85,7 @@ public class UIController : MonoBehaviour
 
         coinTextBox.gameObject.SetActive(true);
         UpdateMoney();
+        timeSystem.HideTimeBox();
 
         EnergyBox.gameObject.SetActive(false);
 
@@ -103,6 +110,8 @@ public class UIController : MonoBehaviour
         CloseDialog();
         CloseInventory();
         CloseWebStore();
+
+        timeSystem.ShowTimeBox();
 
         mainCharCont.canMove = true;
     }

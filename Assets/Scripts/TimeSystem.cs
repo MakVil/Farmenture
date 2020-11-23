@@ -18,6 +18,8 @@ public class TimeSystem : MonoBehaviour
 
     public static TimeSystem Instance;
 
+    private bool isPaused = false;
+
     private void Awake()
     {
         Instance = this;
@@ -26,24 +28,27 @@ public class TimeSystem : MonoBehaviour
     void Start()
     {
         currentHours = DAY_START_HOURS;
-        currentMins = 50f;
+        currentMins = 00f;
 
         UpdateTimeText();
     }
     
     void FixedUpdate()
     {
-        currentMins += Time.deltaTime;
-        if (currentMins >= 60)
+        if (!isPaused)
         {
-            currentHours += 1;
-            currentMins = Mathf.Clamp(currentMins - 60, 0, 59);
-            if (currentHours >= DAY_END_HOURS)
+            currentMins += Time.deltaTime;
+            if (currentMins >= 60)
             {
-                StartDay();
+                currentHours += 1;
+                currentMins = Mathf.Clamp(currentMins - 60, 0, 59);
+                if (currentHours >= DAY_END_HOURS)
+                {
+                    StartDay();
+                }
             }
+            UpdateTimeText();
         }
-        UpdateTimeText();
     }
 
     private void StartDay()
@@ -64,6 +69,11 @@ public class TimeSystem : MonoBehaviour
         SaveLoadSystem.Instance.SaveProgress();
 
         UIController.Instance.CloseAll();
+    }
+
+    public void GoToSleep()
+    {
+        StartDay();
     }
 
     private void UpdateTimeText()
@@ -91,5 +101,10 @@ public class TimeSystem : MonoBehaviour
     public void ShowTimeBox()
     {
         clockTextBox.SetActive(true);
+    }
+
+    public void SetPaused(bool val)
+    {
+        isPaused = val;
     }
 }

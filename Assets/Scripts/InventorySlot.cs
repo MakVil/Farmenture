@@ -79,7 +79,8 @@ public class InventorySlot : MonoBehaviour
     {
         item = null;
         count = 0;
-        itemImage.sprite = null;
+        if(itemImage != null)
+            itemImage.sprite = null;
         HideItemImage();
         HideCountLabel();
     }

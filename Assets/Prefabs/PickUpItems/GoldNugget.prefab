@@ -98,7 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 21300000, guid: 82269c47636ec6a44aebc55397366850, type: 3}
   isUnique: 0
-  count: 13
+  count: 1
+  currentCount: 0
   itemType: 1
   buyPrice: 50
   sellPrice: 20

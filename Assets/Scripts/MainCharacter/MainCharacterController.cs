@@ -64,52 +64,55 @@ public class MainCharacterController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        movement.x = Input.GetAxis("Horizontal");
-        movement.y = Input.GetAxis("Vertical");
+        if (canMove)
+        {
+            movement.x = Input.GetAxis("Horizontal");
+            movement.y = Input.GetAxis("Vertical");
 
-        if (movement.x > 0)
-        {
-            faceRight = true;
-            idleHor = true;
-        }
-        else if (movement.x < 0)
-        {
-            faceRight = false;
-            idleHor = true;
-        }
-
-        if (movement.y > 0)
-        {
-            faceUp = true;
-            idleHor = false;
-        }
-        else if (movement.y < 0)
-        {
-            faceUp = false;
-            idleHor = false;
-        }
-
-        if (movement.x == 0 && movement.y == 0)
-        {
-            animator.SetTrigger("Idle");
-
-            if (idleHor)
+            if (movement.x > 0)
             {
-                animator.SetFloat("faceRight", faceRight ? 1.0f : -1.0f);
-                animator.SetFloat("faceUp", 0f);
+                faceRight = true;
+                idleHor = true;
+            }
+            else if (movement.x < 0)
+            {
+                faceRight = false;
+                idleHor = true;
+            }
+
+            if (movement.y > 0)
+            {
+                faceUp = true;
+                idleHor = false;
+            }
+            else if (movement.y < 0)
+            {
+                faceUp = false;
+                idleHor = false;
+            }
+
+            if (movement.x == 0 && movement.y == 0)
+            {
+                animator.SetTrigger("Idle");
+
+                if (idleHor)
+                {
+                    animator.SetFloat("faceRight", faceRight ? 1.0f : -1.0f);
+                    animator.SetFloat("faceUp", 0f);
+                }
+                else
+                {
+                    animator.SetFloat("faceRight", 0f);
+                    animator.SetFloat("faceUp", faceUp ? 1.0f : -1.0f);
+                }
             }
             else
             {
-                animator.SetFloat("faceRight", 0f);
-                animator.SetFloat("faceUp", faceUp ? 1.0f : -1.0f);
-            }
-        }
-        else
-        {
-            animator.SetTrigger("Move");
+                animator.SetTrigger("Move");
 
-            animator.SetFloat("MoveX", movement.x);
-            animator.SetFloat("MoveY", movement.y);
+                animator.SetFloat("MoveX", movement.x);
+                animator.SetFloat("MoveY", movement.y);
+            }
         }
 
         if (isInvincible)
@@ -184,6 +187,10 @@ public class MainCharacterController : MonoBehaviour
                 {
                     hit.collider.GetComponent<NPCController>().StartDialog();
                 }
+                else if (hit.collider.CompareTag("Bed"))
+                {
+                    TimeSystem.Instance.GoToSleep();
+                }
             }
             else if (HotbarController.Instance.IsSeedSelected())
             {
@@ -244,11 +251,15 @@ public class MainCharacterController : MonoBehaviour
     {
         if (canMove)
         {
-            GameObject swordObject = Instantiate(swordPrefab, rb.position + getSwordPositionOffset(), Quaternion.identity);
+            GameObject swordObject = Instantiate(swordPrefab, rb.position + GetSwordPositionOffset(), Quaternion.identity);
+            swordObject.GetComponent<SpriteRenderer>().sortingOrder = (faceUp ? 0 : 1);
             SwordController sword = swordObject.GetComponent<SwordController>();
             if (sword != null)
             {
-                sword.Swing(faceRight ? 1.0f : 0.0f, gameObject);
+                if(idleHor)
+                    sword.Swing(faceRight ? 1f : -1f, 0, gameObject);
+                else
+                    sword.Swing(0, faceUp ? 1f : -1f, gameObject);
                 canMove = false;
             }
         }
@@ -272,11 +283,14 @@ public class MainCharacterController : MonoBehaviour
         return movementSpeed * Time.deltaTime;
     }
 
-    public Vector2 getSwordPositionOffset()
+    public Vector2 GetSwordPositionOffset()
     {
-        Vector2 offset = Vector2.up * 0.4f;
-        if(!idleHor)
-            offset += (faceRight ? Vector2.right : Vector2.left) * 0.3f;
+        Vector2 offset;
+        if (!idleHor)
+            offset = Vector2.up * (faceUp ?  0.7f :  0.2f);
+        else
+            offset = Vector2.up * 0.4f + (faceRight ? Vector2.right : Vector2.left) * 0.1f;
+
         return offset;
     }
 

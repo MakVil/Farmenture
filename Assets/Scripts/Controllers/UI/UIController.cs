@@ -11,12 +11,13 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI coinText;
 
     public GameObject EnergyBox;
-    public MainCharInventory mainCharInv;
-    public MainCharacterController mainCharCont;
-    public HotbarController hotbarCont;
-    public DialogController dialogCont;
-    public WebStoreController storeCont;
-    public TimeSystem timeSystem;
+    private MainCharInventory mainCharInv;
+    private MainCharacterController mainCharCont;
+    private HotbarController hotbarCont;
+    private DialogController dialogCont;
+    private WebStoreController storeCont;
+    private SettingsController settingsCont;
+    private TimeSystem timeSystem;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class UIController : MonoBehaviour
         dialogCont = DialogController.Instance;
         storeCont = WebStoreController.Instance;
         mainCharCont = MainCharacterController.Instance;
+        settingsCont = SettingsController.Instance;
         timeSystem = TimeSystem.Instance;
     }
 
@@ -102,7 +104,23 @@ public class UIController : MonoBehaviour
     {
         dialogCont.OpenDialog();
         hotbarCont.HideHotbar();
+    }
 
+    public void OpenSettings()
+    {
+        settingsCont.OpenSettings();
+
+        CloseDialog();
+        CloseInventory();
+        CloseWebStore();
+
+        mainCharCont.canMove = false;
+    }
+
+    public void CloseSettings()
+    {
+        settingsCont.CloseSettings();
+        mainCharCont.canMove = true;
     }
 
     public void CloseAll()

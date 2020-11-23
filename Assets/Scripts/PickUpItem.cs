@@ -8,6 +8,7 @@ public class PickUpItem : MonoBehaviour
     public bool isUnique;
     public int count = 1;
     public int Count { get => count; }
+    public int currentCount;
     public ItemTypes itemType;
 
     public int buyPrice;
@@ -22,6 +23,7 @@ public class PickUpItem : MonoBehaviour
         Axe,
         PumpkinSeed,
         Pumpkin,
+        Meat,
         Random
     }
 

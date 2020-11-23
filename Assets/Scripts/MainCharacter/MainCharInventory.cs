@@ -147,7 +147,7 @@ public class MainCharInventory : MonoBehaviour
         {
             if(slot.Item != null)
             {
-                slot.Item.count = slot.Count;
+                slot.Item.currentCount = slot.Count;
                 outItems.Add(slot.Item);
             }
         }

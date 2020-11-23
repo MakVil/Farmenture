@@ -7,11 +7,12 @@ public class CrowController : MonoBehaviour
     private const int MAX_HEALTH = 20;
 
     public GameObject hitEffectPrefab;
+    public GameObject dropItemPrefab;
 
     private Rigidbody2D rb;
     public float speed = 3f;
 
-    private Vector2 position;
+    private Vector2 oldPosition;
     public Vector2 maxMovement;
     private Vector2 maxPosition;
     private Vector2 minPosition;
@@ -48,16 +49,21 @@ public class CrowController : MonoBehaviour
 
         rb.MovePosition(position);
 
-        if (position.x <= minPosition.x)
+        if (Mathf.Approximately(oldPosition.x, position.x))
+            goRight = !goRight;
+        else if (position.x <= minPosition.x)
             goRight = true;
         else if (position.x >= maxPosition.x)
             goRight = false;
 
-        if (position.y <= minPosition.y)
+        if (Mathf.Approximately(oldPosition.y, position.y))
+            goUp = !goUp;
+        else if (position.y <= minPosition.y)
             goUp = true;
         else if (position.y >= maxPosition.y)
             goUp = false;
 
+        oldPosition = position;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -73,9 +79,11 @@ public class CrowController : MonoBehaviour
         Instantiate(hitEffectPrefab, rb.position, Quaternion.identity);
 
         currentHealth += amount;
-        Debug.Log("Crow's health is " + currentHealth);
         if (currentHealth <= 0)
+        {
+            Instantiate(dropItemPrefab, rb.position, Quaternion.identity);
             Destroy(gameObject);
+        }
 
     }
 }

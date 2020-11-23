@@ -76,10 +76,17 @@ public class StartSceneController : MonoBehaviour
     private void DeleteSave()
     {
         SaveLoadSystem.Instance.DeleteSaveSlot(confirmDeleteSlot);
+
+        if (LoadGameController.Instance != null)
+            LoadGameController.Instance.SetButtonsEnabled(true);
+        if (NewGameController.Instance != null)
+            NewGameController.Instance.SetButtonsEnabled(true);
+
         if (NewGameController.Instance != null)
             NewGameController.Instance.PopulateSaveSlots();
         if (LoadGameController.Instance != null)
             LoadGameController.Instance.PopulateSaveSlots();
+
     }
 
     public void StartGame()

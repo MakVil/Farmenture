@@ -45,7 +45,7 @@ public class PopulateSell : MonoBehaviour
                     storeItem.itemType = item.itemType;
                     storeItem.price = item.sellPrice;
                     storeItem.priceText.text = item.sellPrice.ToString();
-                    storeItem.count = item.count;
+                    storeItem.count = item.currentCount;
 
                     storeItem.UpdateCount(0);
 

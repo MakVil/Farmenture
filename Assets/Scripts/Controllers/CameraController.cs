@@ -5,11 +5,12 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private Vector3 offset;
-    public GameObject mainCharacter;
+    private GameObject mainCharacter;
 
     // Start is called before the first frame update
     void Start()
     {
+        mainCharacter = MainCharacterController.Instance.gameObject;
         offset = transform.position - mainCharacter.transform.position;
         offset.x = 0;
         offset.y = 0;

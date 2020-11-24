@@ -1,0 +1,26 @@
+Here is a list of free asset packages/sources that are used in this game.
+
+- Free 2D Mega Pack by Brackeys
+Package: https://assetstore.unity.com/packages/2d/free-2d-mega-pack-177430
+Owner: http://brackeys.com/
+Used: Many items' sprites are from this source
+
+- Fantasy Wooden GUI: Free by Black Hammer
+Package: https://assetstore.unity.com/packages/2d/gui/fantasy-wooden-gui-free-103811
+Owner: https://assetstore.unity.com/publishers/32893
+Used: Most of the UI backgrounds are from this package
+
+- Simple UI Elements by MadFireOn
+Package: https://assetstore.unity.com/packages/2d/gui/icons/simple-ui-elements-53276
+Owner: http://madfireongames.com/
+Used: Most of the UI elemnts are from this package
+
+- 2D Beginner:Tutorial Resources by Unity Technologies
+Package: https://assetstore.unity.com/packages/essentials/asset-packs/2d-beginner-tutorial-resources-140167
+Owner: http://unity3d.com
+Used: Most of the backgrounds and some items' sprites are from this package
+
+- PIA Pixel Art: Editor by Kristion Piacenti
+Tool: https://assetstore.unity.com/packages/tools/painting/pia-pixel-art-editor-113082
+Owner: https://assetstore.unity.com/publishers/35352
+Used: Most of the sprites developed by Vilma Mäkitalo, the developer of this game, are made with this tool.

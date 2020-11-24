@@ -44,7 +44,7 @@ public class TimeSystem : MonoBehaviour
                 currentMins = Mathf.Clamp(currentMins - 60, 0, 59);
                 if (currentHours >= DAY_END_HOURS)
                 {
-                    StartDay();
+                    UIController.Instance.EndDay();
                 }
             }
             UpdateTimeText();
@@ -67,8 +67,6 @@ public class TimeSystem : MonoBehaviour
         FarmingController.Instance.AgePlants();
 
         SaveLoadSystem.Instance.SaveProgress();
-
-        UIController.Instance.CloseAll();
     }
 
     public void GoToSleep()

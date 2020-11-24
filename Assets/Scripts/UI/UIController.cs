@@ -17,6 +17,7 @@ public class UIController : MonoBehaviour
     private DialogController dialogCont;
     private WebStoreController storeCont;
     private SettingsController settingsCont;
+    private NightController nightCont;
     private TimeSystem timeSystem;
 
     private void Awake()
@@ -34,6 +35,7 @@ public class UIController : MonoBehaviour
         storeCont = WebStoreController.Instance;
         mainCharCont = MainCharacterController.Instance;
         settingsCont = SettingsController.Instance;
+        nightCont = NightController.Instance;
         timeSystem = TimeSystem.Instance;
     }
 
@@ -121,6 +123,12 @@ public class UIController : MonoBehaviour
     {
         settingsCont.CloseSettings();
         mainCharCont.canMove = true;
+    }
+
+    public void EndDay()
+    {
+        CloseAll();
+        nightCont.StartNight();
     }
 
     public void CloseAll()

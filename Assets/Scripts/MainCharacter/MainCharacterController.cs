@@ -189,7 +189,7 @@ public class MainCharacterController : MonoBehaviour
                 }
                 else if (hit.collider.CompareTag("Bed"))
                 {
-                    TimeSystem.Instance.GoToSleep();
+                    UIController.Instance.EndDay();
                 }
             }
             else if (HotbarController.Instance.IsSeedSelected())

@@ -18,6 +18,7 @@ public class UIController : MonoBehaviour
     private WebStoreController storeCont;
     private SettingsController settingsCont;
     private NightController nightCont;
+    private ForestCanvasController forestCanvasCont;
     private TimeSystem timeSystem;
 
     private void Awake()
@@ -36,6 +37,7 @@ public class UIController : MonoBehaviour
         mainCharCont = MainCharacterController.Instance;
         settingsCont = SettingsController.Instance;
         nightCont = NightController.Instance;
+        forestCanvasCont = ForestCanvasController.Instance;
         timeSystem = TimeSystem.Instance;
     }
 
@@ -53,7 +55,7 @@ public class UIController : MonoBehaviour
 
     public void OpenInventory()
     {
-        if (!storeCont.gameObject.activeSelf && !dialogCont.gameObject.activeSelf)
+        if ((storeCont == null || !storeCont.gameObject.activeSelf) && !dialogCont.gameObject.activeSelf)
         {
             mainCharInv.gameObject.SetActive(true);
             hotbarCont.gameObject.SetActive(false);
@@ -70,16 +72,19 @@ public class UIController : MonoBehaviour
 
     public void CloseWebStore()
     {
-        storeCont.HideWebStore();
-        hotbarCont.ShowHotbar();
+        if (storeCont != null)
+        {
+            storeCont.HideWebStore();
+            hotbarCont.ShowHotbar();
 
-        coinTextBox.gameObject.SetActive(false);
-        EnergyBox.gameObject.SetActive(true);
-        timeSystem.ShowTimeBox();
+            coinTextBox.gameObject.SetActive(false);
+            EnergyBox.gameObject.SetActive(true);
+            timeSystem.ShowTimeBox();
 
-        EnergyBox.gameObject.SetActive(true);
+            EnergyBox.gameObject.SetActive(true);
 
-        mainCharCont.canMove = true;
+            mainCharCont.canMove = true;
+        }
     }
 
     public void OpenWebStore()
@@ -116,6 +121,7 @@ public class UIController : MonoBehaviour
         CloseInventory();
         CloseWebStore();
 
+        TimeSystem.Instance.SetPaused(true);
         mainCharCont.canMove = false;
     }
 
@@ -123,6 +129,23 @@ public class UIController : MonoBehaviour
     {
         settingsCont.CloseSettings();
         mainCharCont.canMove = true;
+        TimeSystem.Instance.SetPaused(false);
+    }
+
+    public void OpenForestEntryMenu()
+    {
+        forestCanvasCont.OpenForestEntryMenu();
+        
+        TimeSystem.Instance.SetPaused(true);
+        mainCharCont.canMove = false;
+    }
+
+    public void CloseForestEntryMenu()
+    {
+        forestCanvasCont.CloseForestEntryMenu();
+
+        mainCharCont.canMove = true;
+        TimeSystem.Instance.SetPaused(false);
     }
 
     public void EndDay()
@@ -146,7 +169,7 @@ public class UIController : MonoBehaviour
     {
         return !dialogCont.gameObject.activeSelf && 
             !mainCharInv.gameObject.activeSelf && 
-            !storeCont.gameObject.activeSelf;
+            (storeCont == null || !storeCont.gameObject.activeSelf);
     }
 
     public void UpdateMoney()

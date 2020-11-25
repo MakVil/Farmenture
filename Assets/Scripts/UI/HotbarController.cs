@@ -11,20 +11,11 @@ public class HotbarController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
 
-        HotbarSlot[] slots = GetComponentsInChildren<HotbarSlot>();
-        for (int i = 0; i < 8; i++)
-        {
-            foreach (HotbarSlot slot in slots)
-            {
-                if (slot.ID == i)
-                {
-                    Instance.hotbarSlotList.Add(slot);
-                    break;
-                }
-            }
-        }
+        if (hotbarSlotList.Count == 0)
+            InitSlotList();
 
         HotbarSlot slot0 = GetSlot(0);
         slot0.SetSelected(true);
@@ -49,6 +40,22 @@ public class HotbarController : MonoBehaviour
                 GetSlot(slot.ID - 1).SetSelected(true);
             else
                 GetSlot(7).SetSelected(true);
+        }
+    }
+
+    private void InitSlotList()
+    {
+        HotbarSlot[] slots = GetComponentsInChildren<HotbarSlot>();
+        for (int i = 0; i < 8; i++)
+        {
+            foreach (HotbarSlot slot in slots)
+            {
+                if (slot.ID == i)
+                {
+                    Instance.hotbarSlotList.Add(slot);
+                    break;
+                }
+            }
         }
     }
 
@@ -194,6 +201,9 @@ public class HotbarController : MonoBehaviour
 
     public void EmptyHotbar()
     {
+        if (hotbarSlotList == null || hotbarSlotList.Count == 0)
+            InitSlotList();
+
         foreach (HotbarSlot slot in hotbarSlotList)
         {
             slot.EmptySlot();

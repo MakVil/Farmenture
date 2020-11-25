@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveLoadSystem : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class SaveLoadSystem : MonoBehaviour
     public static int usedSaveSlot;
     public static string saveName;
     public static bool loadSave;
+    public static bool loadTemp;
+    public static bool showSaveInfo;
 
     public static SaveLoadSystem Instance { get; private set; }
 
@@ -27,23 +30,22 @@ public class SaveLoadSystem : MonoBehaviour
         {
             if (loadSave)
                 LoadProgress();
+            else if (loadTemp)
+                LoadTempProgress();
             else
             {
                 // Case of new game
                 SaveProgress();
+                TimelineController.Instance.playableDirector.Play();
             }
-        }
-    }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SaveProgress();
-        }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-            LoadProgress();
+            // Case of going into sleep while in forest
+            if (showSaveInfo)
+            {
+                BedController.Instance.SetToSleepSprite();
+                NightController.Instance.EndNightAfterForest();
+                showSaveInfo = false;
+            }
         }
     }
 
@@ -55,12 +57,33 @@ public class SaveLoadSystem : MonoBehaviour
         dirtPlotData.Save(usedSaveSlot);
     }
 
+    public void SaveTempProgress()
+    {
+        Debug.Log("Save data");
+        mainCharacterStats.SaveTemp(usedSaveSlot, saveName);
+        mcInventoryData.SaveTemp(usedSaveSlot);
+        dirtPlotData.SaveTemp(usedSaveSlot);
+    }
+
     public void LoadProgress()
     {
         Debug.Log("Load data");
         mainCharacterStats.Load(usedSaveSlot);
         mcInventoryData.Load(usedSaveSlot);
         dirtPlotData.Load(usedSaveSlot);
+    }
+
+    public void LoadTempProgress()
+    {
+        Debug.Log("Load data");
+        mainCharacterStats.LoadTemp(usedSaveSlot);
+        mcInventoryData.LoadTemp(usedSaveSlot);
+        dirtPlotData.LoadTemp(usedSaveSlot);
+
+        if(SceneManager.GetActiveScene().name.Equals("FarmScene"))
+        {
+            MainCharacterController.Instance.MoveToForestEntry();
+        }
     }
 
     public void LoadSaveSlotData(SaveSlot slot)

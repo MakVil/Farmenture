@@ -99,10 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0925c37c9ae650439b93d31d9593371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forestEntryPostion: {x: -30, y: 10.4, z: 0}
   startPosition: {x: 0, y: 0, z: 0}
   movementSpeed: 4
-  isSwinging: 0
-  maxEnergy: 100
+  canMove: 1
   swordPrefab: {fileID: 6865973075771077771, guid: 046b602708458ca42b9c80f97d1739b5,
     type: 3}
 --- !u!50 &2524742739589825799

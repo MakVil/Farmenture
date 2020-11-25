@@ -9,6 +9,7 @@ TagManager:
   - DirtPlot
   - Computer
   - Bed
+  - ForestEntry
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - 
   - Weapons
   - Character
-  - NPC
+  - Interact
   - DirtPlot
   - 
   - 

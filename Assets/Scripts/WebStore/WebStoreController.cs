@@ -12,7 +12,8 @@ public class WebStoreController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
         HideWebStore();
     }
 

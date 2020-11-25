@@ -11,11 +11,20 @@ public class MainCharInventory : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        if (inventorySlotList == null || inventorySlotList.Count == 0)
+            InitSlotList();
     }
 
     private void Start()
     {
-        Instance.inventorySlotList = new List<InventorySlot>();
+        gameObject.SetActive(false);
+    }
+
+    private void InitSlotList()
+    {
+        if(inventorySlotList == null)
+            inventorySlotList = new List<InventorySlot>();
+
         InventorySlot[] slots = GetComponentsInChildren<InventorySlot>();
         for (int i = 0; i < 32; i++)
         {
@@ -23,13 +32,11 @@ public class MainCharInventory : MonoBehaviour
             {
                 if (slot.ID == i)
                 {
-                    Instance.inventorySlotList.Add(slot);
+                    inventorySlotList.Add(slot);
                     break;
                 }
             }
         }
-
-        gameObject.SetActive(false);
     }
 
     public void CollectItem(PickUpItem item)
@@ -133,7 +140,10 @@ public class MainCharInventory : MonoBehaviour
 
     public void EmptyInventory()
     {
-        foreach(InventorySlot slot in inventorySlotList)
+        if (inventorySlotList.Count == 0)
+            InitSlotList();
+
+        foreach (InventorySlot slot in inventorySlotList)
         {
             slot.EmptySlot();
         }

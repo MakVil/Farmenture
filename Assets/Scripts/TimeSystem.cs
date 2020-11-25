@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimeSystem : MonoBehaviour
 {
+    private const string PROGRESS_SAVED_TEXT = "Progress saved";
+
     public GameObject clockTextBox;
+    public Image infoBox;
 
     private const int DAY_START_HOURS = 8;
-    private const int DAY_END_HOURS = 9;
+    private const int DAY_END_HOURS = 24;
 
-    private int currentHours;
-    private float currentMins;
+    private static int currentHours;
+    private static float currentMins;
+
+    public static bool firstInit = true;
 
     public int day = 1;
 
@@ -22,22 +28,28 @@ public class TimeSystem : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-    }
+        if (Instance == null)
+        {
+            Instance = this;
+        }
 
-    void Start()
-    {
-        currentHours = DAY_START_HOURS;
-        currentMins = 00f;
+        if(firstInit)
+        { 
+            currentHours = DAY_START_HOURS;
+            currentMins = 00f;
+            firstInit = false;
+        }
 
         UpdateTimeText();
+
+        infoBox.gameObject.SetActive(false);
     }
-    
+
     void FixedUpdate()
     {
         if (!isPaused)
         {
-            currentMins += Time.deltaTime;
+            currentMins += Time.deltaTime * 5;
             if (currentMins >= 60)
             {
                 currentHours += 1;
@@ -47,7 +59,14 @@ public class TimeSystem : MonoBehaviour
                     UIController.Instance.EndDay();
                 }
             }
-            UpdateTimeText();
+            
+            if (Mathf.FloorToInt(currentMins % 10) == 0)
+                UpdateTimeText();
+        }
+
+        if (infoBox.gameObject.activeSelf && infoBox.GetComponent<CanvasRenderer>().GetAlpha() == 0)
+        {
+            infoBox.gameObject.SetActive(false);
         }
     }
 
@@ -91,6 +110,12 @@ public class TimeSystem : MonoBehaviour
         }
     }
 
+    public void UpdateDay(int newDay)
+    {
+        day = newDay;
+        UpdateTimeText();
+    }
+
     public void HideTimeBox()
     {
         clockTextBox.SetActive(false);
@@ -104,5 +129,14 @@ public class TimeSystem : MonoBehaviour
     public void SetPaused(bool val)
     {
         isPaused = val;
+    }
+
+    public void ShowSaveInfo()
+    {
+        Text infoText = infoBox.GetComponentInChildren<Text>();
+        infoText.text = PROGRESS_SAVED_TEXT;
+
+        infoBox.gameObject.SetActive(true);
+        infoBox.CrossFadeAlpha(0, 2f, false);
     }
 }

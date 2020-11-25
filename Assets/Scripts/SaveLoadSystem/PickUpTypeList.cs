@@ -10,7 +10,8 @@ public class PickUpTypeList : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
     }
 
     public PickUpItem GetPickUpItem(string itemTypeStr)

@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class CollisionHelper
 {
-    public static void EnergyCollision(MainCharacterController controller, int energy)
+    public static void EnergyCollision(int energy)
     {
-        EnergyCollision(controller, energy, null);
+        EnergyCollision(energy, null);
     }
 
-    public static void EnergyCollision(MainCharacterController controller, int energy, AudioClip sound)
+    public static void EnergyCollision(int energy, AudioClip sound)
     {
-        if (controller != null)
-        {
-            controller.ChangeEnergy(energy, sound);
-        }
+        MainCharacterController.Instance.ChangeEnergy(energy, sound);
     }
     public static void HealthCollision(GameObject obj, int health)
     {

@@ -7,6 +7,7 @@ using UnityEngine;
 public class MainCharInvData : ScriptableObject
 {
     private const string SAVE_KEY = "MainCharInvDataSave";
+    private const string TEMP_SAVE_KEY = "MainCharInvDataSaveTemp";
 
     public List<string> items = new List<string>();
     public List<int> counts = new List<int>();
@@ -43,6 +44,44 @@ public class MainCharInvData : ScriptableObject
                     MainCharInventory.Instance.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
                 }
             }
+        else
+        {
+            Debug.Log("Save slot number invalid!");
+        }
+    }
+
+    public void SaveTemp(int saveSlot)
+    {
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
+        {
+            GetItemsAndCounts();
+
+            string jsonData = JsonUtility.ToJson(this);
+            PlayerPrefs.SetString(TEMP_SAVE_KEY, jsonData);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            Debug.Log("Save slot number invalid!");
+        }
+    }
+
+    public void LoadTemp(int saveSlot)
+    {
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
+        {
+            MainCharInventory.Instance.EmptyInventory();
+            HotbarController.Instance.EmptyHotbar();
+
+            PickUpTypeList list = PickUpTypeList.Instance;
+
+            JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(TEMP_SAVE_KEY), this);
+            for (int i = 0; i < counts.Count; i++)
+            {
+                if (list.GetPickUpItem(items[i]) != null)
+                    MainCharInventory.Instance.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
+            }
+        }
         else
         {
             Debug.Log("Save slot number invalid!");

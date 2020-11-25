@@ -6,9 +6,10 @@ using UnityEngine;
 public class MainCharacterStats : ScriptableObject
 {
     private const string SAVE_KEY = "MainCharacterStatSave";
-
-    public int currentEnergy;
+    private const string TEMP_SAVE_KEY = "MainCharacterStatSaveTemp";
+    
     public int currentMoney;
+    public int currentEnergy;
     public string saveName;
     public int day;
 
@@ -17,7 +18,6 @@ public class MainCharacterStats : ScriptableObject
         if ( saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
         {
             MainCharacterController mc = MainCharacterController.Instance;
-            currentEnergy = mc.Energy;
             currentMoney = mc.Money;
             saveName = sName;
             day = TimeSystem.Instance.day;
@@ -41,9 +41,49 @@ public class MainCharacterStats : ScriptableObject
             MainCharacterController mc = MainCharacterController.Instance;
             JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SAVE_KEY + saveSlot.ToString()), this);
 
-            mc.Energy = currentEnergy;
             mc.Money = currentMoney;
-            TimeSystem.Instance.day = day;
+            TimeSystem.Instance.UpdateDay(day);
+
+            EmptyFields();
+        }
+        else
+        {
+            Debug.Log("Save slot is invalid!");
+        }
+    }
+
+    public void SaveTemp(int saveSlot, string sName)
+    {
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
+        {
+            MainCharacterController mc = MainCharacterController.Instance;
+            currentMoney = mc.Money;
+            currentEnergy = mc.Energy;
+            saveName = sName;
+            day = TimeSystem.Instance.day;
+
+            string jsonData = JsonUtility.ToJson(this);
+            PlayerPrefs.SetString(TEMP_SAVE_KEY, jsonData);
+            PlayerPrefs.Save();
+
+            EmptyFields();
+        }
+        else
+        {
+            Debug.Log("Save slot is invalid!");
+        }
+    }
+
+    public void LoadTemp(int saveSlot)
+    {
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
+        {
+            MainCharacterController mc = MainCharacterController.Instance;
+            JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(TEMP_SAVE_KEY), this);
+
+            mc.Money = currentMoney;
+            mc.Energy = currentEnergy;
+            TimeSystem.Instance.UpdateDay(day);
 
             EmptyFields();
         }
@@ -76,7 +116,6 @@ public class MainCharacterStats : ScriptableObject
     public void EmptyFields()
     {
         currentMoney = 0;
-        currentEnergy = 0;
         day = 0;
         saveName = null;
     }

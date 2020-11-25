@@ -10,6 +10,10 @@ public class SettingsController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
         gameObject.SetActive(false);
     }
 
@@ -28,8 +32,19 @@ public class SettingsController : MonoBehaviour
         UIController.Instance.CloseSettings();
     }
 
-    public void EndGameClicked()
+    public void EndGameToMainMenuClicked()
     {
+        TimeSystem.firstInit = true;
+
+        SaveLoadSystem.loadSave = false;
+        SaveLoadSystem.loadTemp = false;
+
         SceneManager.LoadScene(sceneName: "StartScene");
+    }
+
+    public void EndGameToDesktopClicked()
+    {
+        Application.Quit();
+        Debug.Log("Quit game");
     }
 }

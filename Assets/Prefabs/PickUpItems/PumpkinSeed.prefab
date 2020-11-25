@@ -99,12 +99,13 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: e350b83c9fcaae04e9c1669caabddb84, type: 3}
   isUnique: 0
   count: 1
+  currentCount: 77
   itemType: 3
   buyPrice: 2
   sellPrice: 1
   canBeSelled: 1
   canBeBought: 1
-  daysToGrow: 1
+  daysToGrow: 3
   growToPrefab: {fileID: 834796883810660330, guid: 58300c340238134488aca3349c29c44a,
     type: 3}
 --- !u!61 &6110233609532161048

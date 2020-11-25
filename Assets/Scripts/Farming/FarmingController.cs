@@ -12,7 +12,8 @@ public class FarmingController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
 
         dirtPlotList = new List<DirtPlot>();
         plantsOnDirtPlots = new Dictionary<int, Plant>();

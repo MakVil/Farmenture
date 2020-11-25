@@ -12,7 +12,8 @@ public class EnergyBarController : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
         originalSize = mask.rectTransform.rect.width;
     }
     

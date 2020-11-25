@@ -12,7 +12,8 @@ public class LoadGameController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
     }
 
     private void Start()
@@ -48,6 +49,7 @@ public class LoadGameController : MonoBehaviour
         SaveLoadSystem.saveName = saveSlot.saveName.text;
         SaveLoadSystem.usedSaveSlot = saveSlot.saveSlot;
         SaveLoadSystem.loadSave = true;
+        SaveLoadSystem.loadTemp = false;
 
         StartSceneController.Instance.StartGame();
     }

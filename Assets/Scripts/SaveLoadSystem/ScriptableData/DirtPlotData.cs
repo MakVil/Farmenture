@@ -6,6 +6,7 @@ using UnityEngine;
 public class DirtPlotData : ScriptableObject
 {
     private const string SAVE_KEY = "DirtPlotDataSave";
+    private const string TEMP_SAVE_KEY = "DirtPlotDataSaveTemp";
 
     public List<string> items = new List<string>();
     public List<int> IDs = new List<int>();
@@ -34,6 +35,55 @@ public class DirtPlotData : ScriptableObject
             PickUpTypeList list = PickUpTypeList.Instance;
 
             JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SAVE_KEY + saveSlot), this);
+            for (int i = 0; i < IDs.Count; i++)
+            {
+                PickUpItem item = list.GetPickUpItem(items[i]);
+                if (item != null)
+                {
+                    DirtPlot plot = FarmingController.Instance.GetDirtPlot(IDs[i]);
+                    if (plot != null)
+                    {
+                        if (item is Plant)
+                        {
+                            FarmingController.Instance.AddPlant(plot, ((Plant) item));
+                        }
+                        else
+                        {
+                            plot.AddPlant(item, days2Grows[i]);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Save slot number invalid!");
+        }
+    }
+
+    public void SaveTemp(int saveSlot)
+    {
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
+        {
+            GetData();
+
+            string jsonData = JsonUtility.ToJson(this, true);
+            PlayerPrefs.SetString(TEMP_SAVE_KEY, jsonData);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            Debug.Log("Save slot number invalid!");
+        }
+    }
+
+    public void LoadTemp(int saveSlot)
+    {
+        if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
+        {
+            PickUpTypeList list = PickUpTypeList.Instance;
+
+            JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(TEMP_SAVE_KEY), this);
             for (int i = 0; i < IDs.Count; i++)
             {
                 PickUpItem item = list.GetPickUpItem(items[i]);

@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainCharacterController : MonoBehaviour
 {
     private Rigidbody2D rb;
+
+    public Vector3 forestEntryPostion;
 
     public Vector3 startPosition;
     public float movementSpeed = 4f;
@@ -16,8 +19,9 @@ public class MainCharacterController : MonoBehaviour
     private bool idleHor;
 
     public bool canMove;
+    public bool inCutscene;
 
-    public int maxEnergy = 100;
+    public const int MAX_ENERGY = 100;
     private int currentEnergy;
 
     public int Energy { get => currentEnergy; set{ currentEnergy = value; UpdateEnergyBar(); }}
@@ -25,25 +29,36 @@ public class MainCharacterController : MonoBehaviour
     private int money = 10;
     public int Money { get => money; set { money = value; } }
 
-    private float timeInvincible = 2.0f;
+    private float timeInvincible = 1.0f;
     private float timeLeftInvincible;
     private bool isInvincible;
-
+    
     public GameObject swordPrefab;
 
     private AudioSource audioSource;
 
     private Animator animator;
+    public Animator Animator { get => animator; }
 
     public static MainCharacterController Instance { get; private set; }
-    
+
+    public Sprite charSprite;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        startPosition = gameObject.transform.position;
+        charSprite = gameObject.GetComponent<Sprite>();
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         movement = new Vector2();
-
-        Energy = maxEnergy;
+        
+        Energy = MAX_ENERGY;
 
         timeLeftInvincible = 0.0f;
         isInvincible = false;
@@ -54,101 +69,110 @@ public class MainCharacterController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
     }
-
-    private void Awake()
-    {
-        Instance = this;
-        startPosition = gameObject.transform.position;
-    }
-
+    
     // Update is called once per frame
     private void Update()
     {
-        if (canMove)
+        if (!inCutscene)
         {
-            movement.x = Input.GetAxis("Horizontal");
-            movement.y = Input.GetAxis("Vertical");
+            if (canMove)
+            {
+                movement.x = Input.GetAxis("Horizontal");
+                movement.y = Input.GetAxis("Vertical");
 
-            if (movement.x > 0)
-            {
-                faceRight = true;
-                idleHor = true;
-            }
-            else if (movement.x < 0)
-            {
-                faceRight = false;
-                idleHor = true;
-            }
-
-            if (movement.y > 0)
-            {
-                faceUp = true;
-                idleHor = false;
-            }
-            else if (movement.y < 0)
-            {
-                faceUp = false;
-                idleHor = false;
-            }
-
-            if (movement.x == 0 && movement.y == 0)
-            {
-                animator.SetTrigger("Idle");
-
-                if (idleHor)
+                if (movement.x > 0)
                 {
-                    animator.SetFloat("faceRight", faceRight ? 1.0f : -1.0f);
-                    animator.SetFloat("faceUp", 0f);
+                    faceRight = true;
+                    idleHor = true;
+                }
+                else if (movement.x < 0)
+                {
+                    faceRight = false;
+                    idleHor = true;
+                }
+
+                if (movement.y > 0)
+                {
+                    faceUp = true;
+                    idleHor = false;
+                }
+                else if (movement.y < 0)
+                {
+                    faceUp = false;
+                    idleHor = false;
+                }
+
+                if (movement.x == 0 && movement.y == 0)
+                {
+                    animator.SetTrigger("Idle");
+
+                    if (idleHor)
+                    {
+                        animator.SetFloat("faceRight", faceRight ? 1.0f : -1.0f);
+                        animator.SetFloat("faceUp", 0f);
+                    }
+                    else
+                    {
+                        animator.SetFloat("faceRight", 0f);
+                        animator.SetFloat("faceUp", faceUp ? 1.0f : -1.0f);
+                    }
                 }
                 else
                 {
-                    animator.SetFloat("faceRight", 0f);
-                    animator.SetFloat("faceUp", faceUp ? 1.0f : -1.0f);
+                    animator.SetTrigger("Move");
+
+                    animator.SetFloat("MoveX", movement.x);
+                    animator.SetFloat("MoveY", movement.y);
+                }
+
+                if (isInvincible)
+                {
+                    timeLeftInvincible = Mathf.Clamp(timeLeftInvincible - Time.deltaTime, 0, timeInvincible);
+                    if (Mathf.Approximately(timeLeftInvincible, 0))
+                    {
+                        isInvincible = false;
+                    }
+                }
+
+                if (Input.GetButtonDown("Attack"))
+                {
+                    SwingSword();
+                }
+                else if (Input.GetButtonDown("Interact"))
+                {
+                    Interact();
                 }
             }
-            else
+
+            if (Input.GetButtonDown("Inventory"))
             {
-                animator.SetTrigger("Move");
-
-                animator.SetFloat("MoveX", movement.x);
-                animator.SetFloat("MoveY", movement.y);
+                OpenCloseInventory();
             }
-        }
 
-        if (isInvincible)
-        {
-            timeLeftInvincible = Mathf.Clamp(timeLeftInvincible - Time.deltaTime, 0, timeInvincible);
-            if (Mathf.Approximately(timeLeftInvincible, 0))
+            if (isInvincible)
             {
-                isInvincible = false;
+                timeLeftInvincible = Mathf.Clamp(timeLeftInvincible - Time.deltaTime, 0, timeInvincible);
+                if (Mathf.Approximately(timeLeftInvincible, 0))
+                {
+                    isInvincible = false;
+                }
             }
-        }
-
-        if (Input.GetButtonDown("Attack"))
-        {
-            SwingSword();
-        }
-        else if(Input.GetButtonDown("Interact"))
-        {
-            Interact();
-        }
-
-        if (Input.GetButtonDown("Inventory"))
-        {
-            OpenCloseInventory();
         }
     }
 
     private void FixedUpdate()
     {
-        Vector2 position = rb.position;
-        if (canMove)
+        if (!inCutscene)
         {
-            position.x = position.x + GetMovementSpeed() * movement.x;
-            position.y = position.y + GetMovementSpeed() * movement.y;
-        }
+            Vector2 position = rb.position;
+            if (canMove)
+            {
+                position.x = position.x + GetMovementSpeed() * movement.x;
+                position.y = position.y + GetMovementSpeed() * movement.y;
+            }
 
-        rb.MovePosition(position);
+            rb.MovePosition(position);
+        }
     }
 
     private void OpenCloseInventory()
@@ -157,7 +181,7 @@ public class MainCharacterController : MonoBehaviour
         {
             UIController.Instance.CloseInventory();
         }
-        else if(WebStoreController.Instance.gameObject.activeSelf)
+        else if(WebStoreController.Instance != null && WebStoreController.Instance.gameObject.activeSelf)
         {
             UIController.Instance.CloseWebStore();
         }
@@ -173,9 +197,9 @@ public class MainCharacterController : MonoBehaviour
         {
             RaycastHit2D hit;
             if (idleHor)
-                hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 1f, LayerMask.GetMask("NPC"));
+                hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceRight ? Vector2.right : Vector2.left), 1f, LayerMask.GetMask("Interact"));
             else
-                hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 1f, LayerMask.GetMask("NPC"));
+                hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, (faceUp ? Vector2.up : Vector2.down), 1f, LayerMask.GetMask("Interact"));
 
             if (hit.collider != null)
             {
@@ -221,30 +245,44 @@ public class MainCharacterController : MonoBehaviour
         {
             if (amount < 0)
             {
-                isInvincible = true;
-                timeLeftInvincible = timeInvincible;
                 if (hitSound != null)
                     PlaySound(hitSound);
             }
 
-            Energy = Mathf.Clamp(Energy + amount, -1, maxEnergy);
+            Energy = Mathf.Clamp(Energy + amount, -1, MAX_ENERGY);
+
+            if(Energy <= 0)
+            {
+                Die();
+            }
 
             UpdateEnergyBar();
         }
     }
 
+    public void SetInvincible()
+    {
+        isInvincible = true;
+        timeLeftInvincible = timeInvincible;
+    }
+
     public void RefillEnergy()
     {
-        Energy = maxEnergy;
+        Energy = MAX_ENERGY;
         UpdateEnergyBar();
     }
 
     private void UpdateEnergyBar()
     {
-        if (EnergyBarController.instance != null && maxEnergy != 0)
+        if (EnergyBarController.instance != null && MAX_ENERGY != 0)
         {
-            EnergyBarController.instance.SetEnergyValue(currentEnergy / (float)maxEnergy);
+            EnergyBarController.instance.SetEnergyValue(currentEnergy / (float) MAX_ENERGY);
         }
+    }
+
+    public void Die()
+    {
+        NightController.Instance.StartNight();
     }
 
     private void SwingSword()
@@ -268,6 +306,16 @@ public class MainCharacterController : MonoBehaviour
     public void MoveToStartPosition()
     {
         gameObject.transform.position = startPosition;
+    }
+
+    public void MoveTo(float x, float y)
+    {
+        gameObject.transform.position = new Vector3(x, y);
+    }
+
+    public void MoveToForestEntry()
+    {
+        gameObject.transform.position = forestEntryPostion;
     }
 
     public void PlaySound(AudioClip sound)

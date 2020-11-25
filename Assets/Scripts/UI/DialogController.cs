@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DialogController : MonoBehaviour
@@ -8,7 +9,9 @@ public class DialogController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
+        gameObject.SetActive(false);
     }
 
     public void CloseDialog()
@@ -19,5 +22,19 @@ public class DialogController : MonoBehaviour
     public void OpenDialog()
     {
         gameObject.SetActive(true);
+    }
+
+    public void SetText(string text, Color color)
+    {
+        TextMeshProUGUI textElem = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        if (textElem != null)
+        {
+            textElem.SetText(text);
+            textElem.color = color;
+        }
+        else
+        {
+            Debug.Log("Dialog text not found!");
+        }
     }
 }

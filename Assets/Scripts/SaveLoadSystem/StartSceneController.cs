@@ -14,7 +14,8 @@ public class StartSceneController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
     }
 
     private void Start()
@@ -92,5 +93,11 @@ public class StartSceneController : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene(sceneName: "FarmScene");
+    }
+
+    public void EndGameClicked()
+    {
+        Application.Quit();
+        Debug.Log("Quit application");
     }
 }

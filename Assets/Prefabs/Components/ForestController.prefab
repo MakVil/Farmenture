@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &269115838098215093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 269115838098215095}
+  - component: {fileID: 269115838098215092}
+  m_Layer: 0
+  m_Name: ForestController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &269115838098215095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269115838098215093}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.98, y: 18.79, z: -599.78735}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &269115838098215092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269115838098215093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7887437acb4b34b4db8f700cae4f76c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startX: 0
+  startY: 0
+  minX: -26
+  maxX: 12
+  minY: -4
+  maxY: 18
+  nOfCrows: 15
+  crowPrefab: {fileID: 2842511375075139053, guid: 121b9a71cf2c04447818c84b72ba6d6f,
+    type: 3}
+  nOfEnergyItems: 5
+  energyItemPrefab: {fileID: 2160618151679886528, guid: 4146dd103e8dbee4099865768b310b15,
+    type: 3}
+  nOfPoisonPlants: 50
+  poisonPlantPrefab: {fileID: 120379207276355211, guid: fa6e48e31cd322f42842a4877f3e423e,
+    type: 3}

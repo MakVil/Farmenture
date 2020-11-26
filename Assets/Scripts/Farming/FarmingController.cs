@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FarmingController : MonoBehaviour
 {
-    private List<DirtPlot> dirtPlotList;
+    public List<DirtPlot> dirtPlotList;
     public List<DirtPlot> DirtPlotList { get => dirtPlotList; }
     public Dictionary<int, Plant> plantsOnDirtPlots;
 
@@ -64,6 +64,7 @@ public class FarmingController : MonoBehaviour
         if (!plantsOnDirtPlots.ContainsKey(ID))
         {
             plantsOnDirtPlots.Add(ID, plant);
+            plant.onDirtPlotID = ID;
         }
     }
     
@@ -71,7 +72,9 @@ public class FarmingController : MonoBehaviour
     {
         if(!plantsOnDirtPlots.ContainsKey(plot.ID))
         {
-            plantsOnDirtPlots.Add(plot.ID, plant);
+            int ID = plot.ID;
+            plantsOnDirtPlots.Add(ID, plant);
+            plant.onDirtPlotID = ID;
             plot.SpawnPlant(plant.prefab);
         }
     }

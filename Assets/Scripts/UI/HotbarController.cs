@@ -11,8 +11,7 @@ public class HotbarController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        Instance = this;
 
         if (hotbarSlotList.Count == 0)
             InitSlotList();

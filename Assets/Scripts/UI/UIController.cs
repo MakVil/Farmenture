@@ -20,6 +20,7 @@ public class UIController : MonoBehaviour
     private NightController nightCont;
     private ForestCanvasController forestCanvasCont;
     private TimeSystem timeSystem;
+    private EndGameController endGameCont;
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class UIController : MonoBehaviour
         nightCont = NightController.Instance;
         forestCanvasCont = ForestCanvasController.Instance;
         timeSystem = TimeSystem.Instance;
+        endGameCont = EndGameController.Instance;
     }
 
     public void CloseInventory()
@@ -74,8 +76,8 @@ public class UIController : MonoBehaviour
     {
         if (storeCont != null)
         {
-            storeCont.HideWebStore();
             hotbarCont.ShowHotbar();
+            storeCont.HideWebStore();
 
             coinTextBox.gameObject.SetActive(false);
             EnergyBox.gameObject.SetActive(true);
@@ -146,6 +148,22 @@ public class UIController : MonoBehaviour
 
         mainCharCont.canMove = true;
         TimeSystem.Instance.SetPaused(false);
+    }
+
+    public void OpenEndGameMenu()
+    {
+        CloseAll();
+        mainCharCont.canMove = false;
+        timeSystem.SetPaused(true);
+
+        endGameCont.OpenEndGameMenu();
+    }
+
+    public void CloseEndGameMenu()
+    {
+        endGameCont.CloseEndGameMenu();
+        mainCharCont.canMove = true;
+        timeSystem.SetPaused(false);
     }
 
     public void EndDay()

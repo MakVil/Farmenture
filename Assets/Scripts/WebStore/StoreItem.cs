@@ -15,10 +15,17 @@ public class StoreItem : MonoBehaviour
 
     public void BuyItem()
     {
-        MainCharacterController.Instance.ReduceMoney(price);
-        PickUpItem item = PickUpTypeList.Instance.GetPickUpItem(itemType);
-        MainCharInventory.Instance.CollectItem(item);
-        PopulateBuy.Instance.UpdateItems();
+        if (itemType != PickUpItem.ItemTypes.TaxiTicket)
+        {
+            MainCharacterController.Instance.ReduceMoney(price);
+            PickUpItem item = PickUpTypeList.Instance.GetPickUpItem(itemType);
+            MainCharInventory.Instance.CollectItem(item);
+            PopulateBuy.Instance.UpdateItems();
+        }
+        else
+        {
+            UIController.Instance.OpenEndGameMenu();
+        }
     }
 
     public void SellItem()

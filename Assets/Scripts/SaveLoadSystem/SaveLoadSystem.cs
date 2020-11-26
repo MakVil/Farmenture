@@ -31,17 +31,34 @@ public class SaveLoadSystem : MonoBehaviour
             if (loadSave)
                 LoadProgress();
             else if (loadTemp)
+            {
                 LoadTempProgress();
-            else
+                if(SceneManager.GetActiveScene().name.Equals("FarmScene"))
+                {
+                    LoadTempDirtProgress();
+                }
+            }
+            else if (TimelineController.Instance != null && TimelineController.Instance.playableDirector != null)
             {
                 // Case of new game
                 SaveProgress();
                 TimelineController.Instance.playableDirector.Play();
+                WebStoreController.firstBuyOpen = true;
             }
 
             // Case of going into sleep while in forest
             if (showSaveInfo)
             {
+                LoadTempDirtProgress();
+                LoadTempProgress();
+                // Counter what is done in LoadTempProgress()
+                MainCharacterController.Instance.MoveToStartPosition();
+
+                FarmingController.Instance.AgePlants();
+                MainCharacterController.Instance.RefillEnergy();
+
+                SaveLoadSystem.Instance.SaveProgress();
+
                 BedController.Instance.SetToSleepSprite();
                 NightController.Instance.EndNightAfterForest();
                 showSaveInfo = false;
@@ -51,7 +68,6 @@ public class SaveLoadSystem : MonoBehaviour
 
     public void SaveProgress()
     {
-        Debug.Log("Save data");
         mainCharacterStats.Save(usedSaveSlot, saveName);
         mcInventoryData.Save(usedSaveSlot);
         dirtPlotData.Save(usedSaveSlot);
@@ -59,15 +75,17 @@ public class SaveLoadSystem : MonoBehaviour
 
     public void SaveTempProgress()
     {
-        Debug.Log("Save data");
         mainCharacterStats.SaveTemp(usedSaveSlot, saveName);
         mcInventoryData.SaveTemp(usedSaveSlot);
+    }
+
+    public void SaveTempDirtProgress()
+    {
         dirtPlotData.SaveTemp(usedSaveSlot);
     }
 
     public void LoadProgress()
     {
-        Debug.Log("Load data");
         mainCharacterStats.Load(usedSaveSlot);
         mcInventoryData.Load(usedSaveSlot);
         dirtPlotData.Load(usedSaveSlot);
@@ -75,15 +93,18 @@ public class SaveLoadSystem : MonoBehaviour
 
     public void LoadTempProgress()
     {
-        Debug.Log("Load data");
         mainCharacterStats.LoadTemp(usedSaveSlot);
         mcInventoryData.LoadTemp(usedSaveSlot);
-        dirtPlotData.LoadTemp(usedSaveSlot);
 
         if(SceneManager.GetActiveScene().name.Equals("FarmScene"))
         {
             MainCharacterController.Instance.MoveToForestEntry();
         }
+    }
+
+    public void LoadTempDirtProgress()
+    {
+        dirtPlotData.LoadTemp(usedSaveSlot);
     }
 
     public void LoadSaveSlotData(SaveSlot slot)

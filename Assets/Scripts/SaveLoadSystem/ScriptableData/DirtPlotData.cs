@@ -21,6 +21,7 @@ public class DirtPlotData : ScriptableObject
             string jsonData = JsonUtility.ToJson(this, true);
             PlayerPrefs.SetString(SAVE_KEY + saveSlot, jsonData);
             PlayerPrefs.Save();
+            Debug.Log("dirt save " + jsonData);
         }
         else
         {
@@ -54,6 +55,7 @@ public class DirtPlotData : ScriptableObject
                     }
                 }
             }
+            Debug.Log("dirt load " + PlayerPrefs.GetString(TEMP_SAVE_KEY));
         }
         else
         {
@@ -70,6 +72,7 @@ public class DirtPlotData : ScriptableObject
             string jsonData = JsonUtility.ToJson(this, true);
             PlayerPrefs.SetString(TEMP_SAVE_KEY, jsonData);
             PlayerPrefs.Save();
+            Debug.Log("Temp dirt save " + jsonData);
         }
         else
         {
@@ -101,8 +104,13 @@ public class DirtPlotData : ScriptableObject
                             plot.AddPlant(item, days2Grows[i]);
                         }
                     }
+                    else
+                    {
+                        Debug.Log("Dirtplot not found! ID " + IDs[i]);
+                    }
                 }
             }
+            Debug.Log("Temp dirt load " + PlayerPrefs.GetString(TEMP_SAVE_KEY));
         }
         else
         {
@@ -128,11 +136,23 @@ public class DirtPlotData : ScriptableObject
         }
 
         Dictionary<int, Plant> plants = FarmingController.Instance.plantsOnDirtPlots;
+        
+        int[] IDKeys = new int[plants.Count];
+        int i = 0;
+        foreach(int ID in plants.Keys)
+        {
+            IDKeys[i] = ID;
+            i++;
+        }
+
+        i = 0;
         foreach (Plant plant in plants.Values)
         {
+            IDs.Add(IDKeys[i]);
             items.Add(plant.itemType.ToString());
-            IDs.Add(plant.onDirtPlotID);
             days2Grows.Add(0);
+
+            i++;
         }
     }
 

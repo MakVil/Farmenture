@@ -43,6 +43,14 @@ public class ForestController : MonoBehaviour
 
     public GameObject poisonPlantPrefab;
 
+    // Gold nugget related variables
+    [SerializeField]
+    private int nOfPossibleGoldNuggets;
+    [SerializeField]
+    private float probabilityOfGoldNugget;
+
+    public GameObject goldNuggetPrefab;
+
     private void Start()
     {
         // Generate the crows
@@ -83,6 +91,19 @@ public class ForestController : MonoBehaviour
 
             Instantiate(poisonPlantPrefab, new Vector3(posX, posY), Quaternion.identity);
 
+        }
+
+        // Generate the gold nuggets
+        for (int i = 0; i < nOfPossibleGoldNuggets; i++)
+        {
+            float rand = Random.value;
+            if (rand <= probabilityOfGoldNugget)
+            {
+                float posX = Random.Range(MinX, MaxX);
+                float posY = Random.Range(MinY, MaxY);
+
+                Instantiate(goldNuggetPrefab, new Vector3(posX, posY), Quaternion.identity);
+            }
         }
 
         MainCharacterController.Instance.MoveTo(StartX, StartY);

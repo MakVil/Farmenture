@@ -1,0 +1,4 @@
+		Days2Grow	SeedPrice	DoneSellPrice
+Pumpkin		3		2		4
+Aubergine	5		5		15
+Strawberry	10		8		50

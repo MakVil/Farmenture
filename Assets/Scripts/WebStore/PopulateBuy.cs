@@ -30,7 +30,7 @@ public class PopulateBuy : MonoBehaviour
 
         foreach (PickUpItem item in typeList.items)
         {
-            if (item.canBeBought)
+            if (item != null && item.canBeBought)
             {
                 obj = Instantiate(storeItemPrefab, transform);
                 StoreItem storeItem = obj.GetComponent<StoreItem>();

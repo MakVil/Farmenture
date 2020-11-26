@@ -65,9 +65,6 @@ public class DirtPlot : MonoBehaviour
                     ren.sprite = null;
             }
         }
-
-        else
-            Debug.Log("Plant grows! Days left " + daysToGrow);
     }
 
     public GameObject SpawnPlant(GameObject plantPrefab)

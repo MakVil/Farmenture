@@ -99,7 +99,7 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: e350b83c9fcaae04e9c1669caabddb84, type: 3}
   isUnique: 0
   count: 1
-  currentCount: 77
+  currentCount: 0
   itemType: 3
   buyPrice: 2
   sellPrice: 1

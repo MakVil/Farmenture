@@ -58,3 +58,7 @@ MonoBehaviour:
   nOfPoisonPlants: 50
   poisonPlantPrefab: {fileID: 120379207276355211, guid: fa6e48e31cd322f42842a4877f3e423e,
     type: 3}
+  nOfPossibleGoldNuggets: 5
+  probabilityOfGoldNugget: 0.5
+  goldNuggetPrefab: {fileID: 5005617212413207642, guid: 39a59a23312539c4b9d6b2b11ff82522,
+    type: 3}

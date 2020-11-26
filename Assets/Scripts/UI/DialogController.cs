@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogController : MonoBehaviour
 {
@@ -9,9 +10,16 @@ public class DialogController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        Instance = this;
         gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if(gameObject.activeSelf && gameObject.GetComponent<CanvasRenderer>().GetAlpha() == 0)
+        {
+            UIController.Instance.CloseDialog();
+        }
     }
 
     public void CloseDialog()
@@ -36,5 +44,10 @@ public class DialogController : MonoBehaviour
         {
             Debug.Log("Dialog text not found!");
         }
+    }
+
+    public void FadeDialog()
+    {
+        gameObject.GetComponent<Image>().CrossFadeAlpha(0f, 4f, false);
     }
 }

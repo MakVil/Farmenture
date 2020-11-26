@@ -24,6 +24,11 @@ public class PickUpItem : MonoBehaviour
         PumpkinSeed,
         Pumpkin,
         Meat,
+        TaxiTicket,
+        Aubergine,
+        AubergineSeed,
+        Strawberry,
+        StrawberrySeed,
         Random
     }
 

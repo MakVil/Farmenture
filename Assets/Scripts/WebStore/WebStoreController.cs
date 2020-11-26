@@ -9,12 +9,16 @@ public class WebStoreController : MonoBehaviour
     public GameObject mainView;
     public GameObject buyView;
     public GameObject sellView;
+    public static bool firstBuyOpen;
 
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
-        HideWebStore();
+        
+        gameObject.SetActive(false);
+        buyView.SetActive(false);
+        sellView.SetActive(false);
     }
 
     public void ClickBuy()
@@ -47,6 +51,14 @@ public class WebStoreController : MonoBehaviour
 
     public void HideWebStore()
     {
+        if (gameObject.activeSelf && firstBuyOpen)
+        {
+            DialogController.Instance.SetText("Hmm... If I buy that taxi ticket, I can get out of this farm!", NewGameCutsceneController.MainCharColor);
+            UIController.Instance.OpenDialog();
+            DialogController.Instance.FadeDialog();
+            firstBuyOpen = false;
+        }
+
         gameObject.SetActive(false);
         buyView.SetActive(false);
         sellView.SetActive(false);

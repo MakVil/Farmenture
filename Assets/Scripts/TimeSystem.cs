@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TimeSystem : MonoBehaviour
@@ -77,15 +78,20 @@ public class TimeSystem : MonoBehaviour
         day++;
 
         MainCharacterController mc = MainCharacterController.Instance;
-        if (mc != null)
+
+        if (SceneManager.GetActiveScene().name.Equals("FarmScene"))
         {
             mc.MoveToStartPosition();
-            mc.RefillEnergy();
+            FarmingController.Instance.AgePlants();
+
+            SaveLoadSystem.Instance.SaveProgress();
+        }
+        else
+        {
+            SaveLoadSystem.Instance.SaveTempProgress();
         }
 
-        FarmingController.Instance.AgePlants();
-
-        SaveLoadSystem.Instance.SaveProgress();
+        mc.RefillEnergy();
     }
 
     public void GoToSleep()

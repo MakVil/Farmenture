@@ -37,6 +37,7 @@ public class ForestCanvasController : MonoBehaviour
         SaveLoadSystem.loadSave = false;
         SaveLoadSystem.loadTemp = true;
 
+        SaveLoadSystem.Instance.SaveTempDirtProgress();
         SaveLoadSystem.Instance.SaveTempProgress();
 
         int forest = rnd.Next(1, 4);

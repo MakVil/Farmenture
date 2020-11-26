@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class NewGameCutsceneController : MonoBehaviour
 {
-    private static Color MainCharColor = new Color32(7, 62, 159, 255);
-    private static Color KevinColor = new Color32(5, 111, 12, 255);
-    private static Color defaultColor = new Color32(232, 99, 10, 255);
-
+    public static Color MainCharColor = new Color32(7, 62, 159, 255);
+    public static Color KevinColor = new Color32(5, 111, 12, 255);
+    public static Color defaultColor = new Color32(232, 99, 10, 255);
 
     public static NewGameCutsceneController Instance;
 

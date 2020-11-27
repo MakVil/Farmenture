@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FarmScene.unity
     guid: 6ec2ec8f75698e34ba428ab590802230
+  - enabled: 1
+    path: Assets/Scenes/ForestScene1.unity
+    guid: 53853dba19ddc7e479adafc939ae6b5f
+  - enabled: 1
+    path: Assets/Scenes/ForestScene2.unity
+    guid: 281632f6c3ea4e84b95b3e4a9734b2da
+  - enabled: 1
+    path: Assets/Scenes/ForestScene3.unity
+    guid: 2be2e52e010ba764190df37d2ed4ccde
   m_configObjects: {}

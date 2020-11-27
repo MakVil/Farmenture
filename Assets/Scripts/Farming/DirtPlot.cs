@@ -73,4 +73,13 @@ public class DirtPlot : MonoBehaviour
         plant.SetActive(true);
         return plant;
     }
+
+    public void EmptySlot()
+    {
+        plant = PickUpItem.ItemTypes.Empty;
+        daysToGrow = 0;
+        SpriteRenderer ren = plantImg.GetComponent<SpriteRenderer>();
+        if (ren != null)
+            ren.sprite = null;
+    }
 }

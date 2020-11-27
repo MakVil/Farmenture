@@ -88,6 +88,8 @@ public class NightController : MonoBehaviour
     {
         gameObject.SetActive(false);
 
+        MainCharacterController.Instance.RefillEnergy();
+
         TimeSystem.Instance.ShowSaveInfo();
         TimeSystem.Instance.SetPaused(false);
     }

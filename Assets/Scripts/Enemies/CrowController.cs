@@ -23,6 +23,8 @@ public class CrowController : MonoBehaviour
 
     private int energyDamage = -10;
 
+    private bool isDead;
+
     public AudioClip hitSound;
 
     // Start is called before the first frame update
@@ -43,27 +45,30 @@ public class CrowController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 position = rb.position;
-        position.x = Mathf.Clamp(position.x + Time.deltaTime * speed * (goRight ? 1 : -1), minPosition.x, maxPosition.x);
-        position.y = Mathf.Clamp(position.y + Time.deltaTime * speed * (goUp ? 1 : -1), minPosition.y, maxPosition.y);
+        if (!isDead)
+        {
+            Vector2 position = rb.position;
+            position.x = Mathf.Clamp(position.x + Time.deltaTime * speed * (goRight ? 1 : -1), minPosition.x, maxPosition.x);
+            position.y = Mathf.Clamp(position.y + Time.deltaTime * speed * (goUp ? 1 : -1), minPosition.y, maxPosition.y);
 
-        rb.MovePosition(position);
+            rb.MovePosition(position);
 
-        if (Mathf.Approximately(oldPosition.x, position.x))
-            goRight = !goRight;
-        else if (position.x <= minPosition.x)
-            goRight = true;
-        else if (position.x >= maxPosition.x)
-            goRight = false;
+            if (Mathf.Approximately(oldPosition.x, position.x))
+                goRight = !goRight;
+            else if (position.x <= minPosition.x)
+                goRight = true;
+            else if (position.x >= maxPosition.x)
+                goRight = false;
 
-        if (Mathf.Approximately(oldPosition.y, position.y))
-            goUp = !goUp;
-        else if (position.y <= minPosition.y)
-            goUp = true;
-        else if (position.y >= maxPosition.y)
-            goUp = false;
+            if (Mathf.Approximately(oldPosition.y, position.y))
+                goUp = !goUp;
+            else if (position.y <= minPosition.y)
+                goUp = true;
+            else if (position.y >= maxPosition.y)
+                goUp = false;
 
-        oldPosition = position;
+            oldPosition = position;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -82,9 +87,15 @@ public class CrowController : MonoBehaviour
         currentHealth += amount;
         if (currentHealth <= 0)
         {
-            Instantiate(dropItemPrefab, rb.position, Quaternion.identity);
-            Destroy(gameObject);
+            isDead = true;
+            gameObject.GetComponent<Animator>().SetTrigger("Die");
         }
 
+    }
+
+    public void AfterDeath()
+    {
+        Instantiate(dropItemPrefab, rb.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

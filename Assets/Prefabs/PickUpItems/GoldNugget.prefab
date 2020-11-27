@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3664056857484350250}
   - component: {fileID: 8794448390292691352}
-  - component: {fileID: 1625862655161672801}
   - component: {fileID: 4601079205829332003}
+  - component: {fileID: -9048702752870707515}
   m_Layer: 0
   m_Name: GoldNugget
   m_TagString: Untagged
@@ -84,27 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1625862655161672801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5005617212413207642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21641d74c0083f47a384266c150ff7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemSprite: {fileID: 21300000, guid: 82269c47636ec6a44aebc55397366850, type: 3}
-  isUnique: 0
-  count: 1
-  currentCount: 0
-  itemType: 1
-  buyPrice: 50
-  sellPrice: 20
-  canBeSelled: 1
-  canBeBought: 1
 --- !u!61 &4601079205829332003
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -131,3 +110,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5625, y: 0.4375}
   m_EdgeRadius: 0
+--- !u!114 &-9048702752870707515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5005617212413207642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9acb0b7a51c06344a220b19ed0bfa7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: 82269c47636ec6a44aebc55397366850, type: 3}
+  isUnique: 0
+  count: 1
+  currentCount: 0
+  itemType: 1
+  buyPrice: 50
+  sellPrice: 20
+  canBeSelled: 1
+  canBeBought: 1
+  collectSound: {fileID: 8300000, guid: 5ab8fc664ca4d604f820e255005a664a, type: 3}

@@ -103,8 +103,12 @@ MonoBehaviour:
   startPosition: {x: 0, y: 0, z: 0}
   movementSpeed: 4
   canMove: 1
+  inCutscene: 0
   swordPrefab: {fileID: 6865973075771077771, guid: 046b602708458ca42b9c80f97d1739b5,
     type: 3}
+  charSprite: {fileID: 0}
+  footStepSound: {fileID: 8300000, guid: a35ec44331d4b514cabf31e928f058b5, type: 3}
+  deadSound: {fileID: 8300000, guid: bd8857660a16ba549b8cc522d93d9117, type: 3}
 --- !u!50 &2524742739589825799
 Rigidbody2D:
   serializedVersion: 4
@@ -163,8 +167,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.212
   m_Pitch: 1
   Loop: 0
   Mute: 0

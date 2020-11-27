@@ -28,26 +28,28 @@ public class SaveLoadSystem : MonoBehaviour
     {
         if (saveName != null && (usedSaveSlot == 1 || usedSaveSlot == 2 || usedSaveSlot ==3))
         {
-            if (loadSave)
-                LoadProgress();
-            else if (loadTemp)
+            if (!showSaveInfo)
             {
-                LoadTempProgress();
-                if(SceneManager.GetActiveScene().name.Equals("FarmScene"))
+                if (loadSave)
+                    LoadProgress();
+                else if (loadTemp)
                 {
-                    LoadTempDirtProgress();
+                    LoadTempProgress();
+                    if (SceneManager.GetActiveScene().name.Equals("FarmScene"))
+                    {
+                        LoadTempDirtProgress();
+                    }
+                }
+                else if (TimelineController.Instance != null && TimelineController.Instance.playableDirector != null)
+                {
+                    // Case of new game
+                    SaveProgress();
+                    TimelineController.Instance.playableDirector.Play();
+                    WebStoreController.firstBuyOpen = true;
                 }
             }
-            else if (TimelineController.Instance != null && TimelineController.Instance.playableDirector != null)
-            {
-                // Case of new game
-                SaveProgress();
-                TimelineController.Instance.playableDirector.Play();
-                WebStoreController.firstBuyOpen = true;
-            }
-
             // Case of going into sleep while in forest
-            if (showSaveInfo)
+            else
             {
                 LoadTempDirtProgress();
                 LoadTempProgress();

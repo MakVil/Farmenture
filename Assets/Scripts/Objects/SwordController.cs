@@ -8,8 +8,9 @@ public class SwordController : MonoBehaviour
     private Rigidbody2D rb;
     private int healthDamage = -5;
     private Animator animator;
-    private GameObject mainCharacter;
     private bool hasDamaged;
+
+    public AudioClip swingSound;
 
     private void Awake()
     {
@@ -32,11 +33,12 @@ public class SwordController : MonoBehaviour
         }
     }
 
-    public void Swing(float faceRight, float faceUp, GameObject mc)
+    public void Swing(float faceRight, float faceUp)
     {
         if (animator != null)
         {
-            mainCharacter = mc;
+
+            MainCharacterController.Instance.PlaySound(swingSound);
             animator.SetFloat("MoveX", faceRight);
             animator.SetFloat("MoveY", faceUp);
             animator.SetTrigger("Swing");

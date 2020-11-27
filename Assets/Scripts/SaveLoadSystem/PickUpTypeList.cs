@@ -16,6 +16,9 @@ public class PickUpTypeList : MonoBehaviour
 
     public PickUpItem GetPickUpItem(string itemTypeStr)
     {
+        if (itemTypeStr == null)
+            return null;
+
         PickUpItem.ItemTypes type = PickUpItem.GetItemType(itemTypeStr);
 
         return GetPickUpItem(type);

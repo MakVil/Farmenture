@@ -57,6 +57,7 @@ public class FarmingController : MonoBehaviour
     public void PickUpPlant(Plant pickUpPlant)
     {
         plantsOnDirtPlots.Remove(pickUpPlant.onDirtPlotID);
+        pickUpPlant.onDirtPlotID = -1;
     } 
 
     public void AddPlant(int ID, Plant plant)
@@ -77,5 +78,15 @@ public class FarmingController : MonoBehaviour
             plant.onDirtPlotID = ID;
             plot.SpawnPlant(plant.prefab);
         }
+    }
+
+    public void EmptyDirtPlotList()
+    {
+        foreach(DirtPlot plot in dirtPlotList)
+        {
+            plot.EmptySlot();
+        }
+
+        plantsOnDirtPlots.Clear();
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2842511375075139051}
   - component: {fileID: 2842511375075139050}
   - component: {fileID: 672586054512316733}
+  - component: {fileID: 1116358670679968558}
   m_Layer: 0
   m_Name: Crow
   m_TagString: Enemy
@@ -151,3 +152,22 @@ MonoBehaviour:
   speed: 2
   maxMovement: {x: 5, y: 5}
   hitSound: {fileID: 8300000, guid: 87e2452fe2c754248926c9a9ab93a467, type: 3}
+--- !u!95 &1116358670679968558
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2842511375075139053}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e9669957c46dc4449b212cc53034439b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

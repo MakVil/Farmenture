@@ -90,8 +90,6 @@ public class TimeSystem : MonoBehaviour
         {
             SaveLoadSystem.Instance.SaveTempProgress();
         }
-
-        mc.RefillEnergy();
     }
 
     public void GoToSleep()

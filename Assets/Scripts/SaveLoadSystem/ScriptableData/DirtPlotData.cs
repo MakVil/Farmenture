@@ -21,7 +21,6 @@ public class DirtPlotData : ScriptableObject
             string jsonData = JsonUtility.ToJson(this, true);
             PlayerPrefs.SetString(SAVE_KEY + saveSlot, jsonData);
             PlayerPrefs.Save();
-            Debug.Log("dirt save " + jsonData);
         }
         else
         {
@@ -34,6 +33,7 @@ public class DirtPlotData : ScriptableObject
         if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
         {
             PickUpTypeList list = PickUpTypeList.Instance;
+            FarmingController.Instance.EmptyDirtPlotList();
 
             JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(SAVE_KEY + saveSlot), this);
             for (int i = 0; i < IDs.Count; i++)
@@ -55,7 +55,6 @@ public class DirtPlotData : ScriptableObject
                     }
                 }
             }
-            Debug.Log("dirt load " + PlayerPrefs.GetString(TEMP_SAVE_KEY));
         }
         else
         {
@@ -72,7 +71,6 @@ public class DirtPlotData : ScriptableObject
             string jsonData = JsonUtility.ToJson(this, true);
             PlayerPrefs.SetString(TEMP_SAVE_KEY, jsonData);
             PlayerPrefs.Save();
-            Debug.Log("Temp dirt save " + jsonData);
         }
         else
         {
@@ -85,6 +83,7 @@ public class DirtPlotData : ScriptableObject
         if (saveSlot == 1 || saveSlot == 2 || saveSlot == 3)
         {
             PickUpTypeList list = PickUpTypeList.Instance;
+            FarmingController.Instance.EmptyDirtPlotList();
 
             JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(TEMP_SAVE_KEY), this);
             for (int i = 0; i < IDs.Count; i++)
@@ -110,7 +109,6 @@ public class DirtPlotData : ScriptableObject
                     }
                 }
             }
-            Debug.Log("Temp dirt load " + PlayerPrefs.GetString(TEMP_SAVE_KEY));
         }
         else
         {

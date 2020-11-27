@@ -21,6 +21,8 @@ public class MainCharInvData : ScriptableObject
             string jsonData = JsonUtility.ToJson(this);
             PlayerPrefs.SetString(SAVE_KEY + saveSlot, jsonData);
             PlayerPrefs.Save();
+
+            //Debug.Log("Save " + jsonData);
         }
         else
         {
@@ -42,8 +44,9 @@ public class MainCharInvData : ScriptableObject
             {
                 if(list.GetPickUpItem(items[i]) != null)
                     MainCharInventory.Instance.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
-                }
             }
+            //Debug.Log("Load " + PlayerPrefs.GetString(SAVE_KEY + saveSlot));
+        }
         else
         {
             Debug.Log("Save slot number invalid!");
@@ -59,6 +62,7 @@ public class MainCharInvData : ScriptableObject
             string jsonData = JsonUtility.ToJson(this);
             PlayerPrefs.SetString(TEMP_SAVE_KEY, jsonData);
             PlayerPrefs.Save();
+            //Debug.Log("Temp save " + jsonData);
         }
         else
         {
@@ -80,7 +84,10 @@ public class MainCharInvData : ScriptableObject
             {
                 if (list.GetPickUpItem(items[i]) != null)
                     MainCharInventory.Instance.AddItemToInventory(list.GetPickUpItem(items[i]), counts[i]);
+                else
+                    Debug.Log("PickUpItem not found " + items[i]);
             }
+            //Debug.Log("Temp load " + PlayerPrefs.GetString(TEMP_SAVE_KEY));
         }
         else
         {

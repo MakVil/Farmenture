@@ -90,9 +90,13 @@ public class MainCharInventory : MonoBehaviour
             if (removeItem)
             {
                 item.gameObject.SetActive(false);
-                if(item is Plant)
+                if (item is Plant)
                 {
                     FarmingController.Instance.PickUpPlant((Plant) item);
+                }
+                else if (item is GoldNugget)
+                {
+                    ((GoldNugget) item).PlayCollectSound();
                 }
             }
             else

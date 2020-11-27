@@ -44,6 +44,9 @@ public class MainCharacterController : MonoBehaviour
 
     public Sprite charSprite;
 
+    public AudioClip footStepSound;
+    public AudioClip deadSound;
+
     private void Awake()
     {
         if (Instance == null)
@@ -282,6 +285,13 @@ public class MainCharacterController : MonoBehaviour
 
     public void Die()
     {
+        canMove = false;
+        animator.SetTrigger("Die");
+        PlaySound(deadSound);
+    }
+
+    public void AfterDeath()
+    {
         NightController.Instance.StartNight();
     }
 
@@ -295,9 +305,9 @@ public class MainCharacterController : MonoBehaviour
             if (sword != null)
             {
                 if(idleHor)
-                    sword.Swing(faceRight ? 1f : -1f, 0, gameObject);
+                    sword.Swing(faceRight ? 1f : -1f, 0);
                 else
-                    sword.Swing(0, faceUp ? 1f : -1f, gameObject);
+                    sword.Swing(0, faceUp ? 1f : -1f);
                 canMove = false;
             }
         }
@@ -352,5 +362,10 @@ public class MainCharacterController : MonoBehaviour
     {
         money = Mathf.Clamp(money - amount, 0, 99999999);
         UIController.Instance.UpdateMoney();
+    }
+
+    public void PlayFootStep()
+    {
+        PlaySound(footStepSound);
     }
 }

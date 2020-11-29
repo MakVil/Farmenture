@@ -81,6 +81,7 @@ public class TimeSystem : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name.Equals("FarmScene"))
         {
+            mc.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
             mc.MoveToStartPosition();
             FarmingController.Instance.AgePlants();
 

@@ -22,7 +22,7 @@ public class InventorySlot : MonoBehaviour
 
     public void HideCountLabel()
     {
-        if(itemCountBackground != null)
+        if(itemCountBackground != null && count == 0)
         {
             itemCountBackground.gameObject.SetActive(false);
         }
@@ -39,7 +39,7 @@ public class InventorySlot : MonoBehaviour
 
     public void HideItemImage()
     {
-        if (itemImage != null)
+        if (itemImage != null && item == null)
         {
             itemImage.gameObject.SetActive(false);
         }
